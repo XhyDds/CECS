@@ -15,14 +15,18 @@ extern VerilatedVcdC *m_trace;
 
 extern uint8_t pmem[];
 
-void print_itrace();
+void print_itrace(int n);
 void difftest_step();
+void add_itrace(word_t pc, word_t code);
 
 // Lab2 HINT: instruction log struct for instruction trace
 struct inst_log{
   word_t pc;
   word_t inst;
 };
+inst_log itrace_queue[16]={};
+int itrace_ptr=0;
+int itrace_cnt=0;
 
 
 uint32_t *cpu_mstatus = NULL, *cpu_mtvec = NULL, *cpu_mepc = NULL, *cpu_mcause = NULL;
@@ -31,7 +35,8 @@ void set_state() {
   sim_cpu.pc = dut->pc_cur;
   memcpy(&sim_cpu.gpr[0], cpu_gpr, 4 * 32);
   // Lab4 TODO: set the state of csr to sim_cpu
-  
+//   sim_cpu.csr.mepc=&cpu_mepc[0];
+//...
 }
 
 // num of executed instruction
@@ -40,6 +45,12 @@ uint64_t g_nr_guest_inst = 0;
 // simulate a single cycle
 void single_cycle() {
 // Lab2 TODO: implement the single cycle function of your cpu
+  add_itrace(dut->pc_cur,dut->inst);
+
+  dut->clk=1;
+  dut->eval();
+  dut->clk=0;
+  dut->eval();
 
   // m_trace->dump(sim_time++); 
   if(dut->commit_wb == 1) set_state();
@@ -74,6 +85,7 @@ SimState sim_state = { .state = SIM_STOP };
 void cpu_exec(unsigned int n){
   switch (sim_state.state) {
     case SIM_END: case SIM_ABORT: case SIM_QUIT:
+      print_itrace(-1);
       printf("Program execution has ended. To restart the program, exit NPC and run again.\n");
       return;
     default: sim_state.state = SIM_RUNNING;
@@ -81,7 +93,9 @@ void cpu_exec(unsigned int n){
   // Lab2 TODO: implement instruction trace for your cpu
 
   bool npc_cpu_uncache_pre = 0;
+  unsigned int itrace_n=n;
   while (n--) {
+    difftest_step();
     // execute single instruction
     if(test_break()) {
       // set the end state
@@ -106,8 +120,10 @@ void cpu_exec(unsigned int n){
 #ifdef DEVICE
     device_update();
 #endif
+
     if(sim_state.state != SIM_RUNNING) break;
   }
+  if(itrace_n!=-1) print_itrace(itrace_n);
 
   switch (sim_state.state) {
     case SIM_RUNNING: sim_state.state = SIM_STOP; break;
@@ -118,7 +134,9 @@ void cpu_exec(unsigned int n){
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
           sim_state.halt_pc);
       // fall through
-    case SIM_QUIT: statistic();
+    case SIM_QUIT: 
+        print_itrace(-1);
+        statistic();
   }
 }
 
@@ -163,6 +181,30 @@ void isa_reg_display() {
   }
 }
 
-void print_itrace() {
+void print_itrace(int n) {
   // Lab2 HINT: you can implement this function to help you print the instruction trace
+    if(itrace_cnt==0||n==0){
+        printf("error: no instruction executed\n");
+        return;
+    }
+    if(n>itrace_cnt||n<0) n=itrace_cnt;
+    int ptr=itrace_ptr;
+    for(int i=0;i<n;i++){
+        char buffer[1024];
+        disassemble(buffer,1024,(uint64_t)itrace_queue[ptr].pc,(uint8_t *)&itrace_queue[ptr].inst,4);
+        printf("%s\n",buffer);
+        if(ptr==0) ptr=15;
+        else ptr--;
+    }
+}
+
+void add_itrace(word_t pc, word_t code){
+    if(itrace_cnt==0) itrace_ptr=0;
+    else if(itrace_ptr==15) itrace_ptr=0;
+    else itrace_ptr++;
+
+    if(itrace_cnt<16) itrace_cnt++;
+
+    itrace_queue[itrace_ptr].pc=pc;
+    itrace_queue[itrace_ptr].inst=code;
 }
