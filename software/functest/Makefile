@@ -20,6 +20,7 @@
 # 3
 NAMES ?= $(notdir $(basename $(wildcard src/*.c))) # 可以使用 wildcard 函数来获取所有的程序名，使用方法请查阅 Makefile 教程
 BASE_PORT = ../base-port
+SIM_PATH = $(abspath "../../simulator")
 
 .PHONY: all
 all: $(NAMES)
@@ -40,4 +41,13 @@ clean:
 clean-all:
 	@echo -include $(BASE_PORT)/Makefile >> $@.mk
 	@make clean-all -s -f $@.mk
+	@rm -rf $@.mk
+
+run: 
+	@echo NAMES = add-longlong > $@.mk 
+	@echo SRCS = add-longlong >> $@.mk
+	@echo BASE_PORT = $(BASE_PORT) >> $@.mk
+	@echo SIM_PATH = "$(SIM_PATH) >> $@.mk
+	@echo -include $(BASE_PORT)/Makefile >> $@.mk
+	@make run -s -f $@.mk
 	@rm -rf $@.mk

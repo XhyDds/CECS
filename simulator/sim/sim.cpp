@@ -95,6 +95,7 @@ void cpu_exec(unsigned int n){
   bool npc_cpu_uncache_pre = 0;
   unsigned int itrace_n=n;
   while (n--) {
+    difftest_step();
     // execute single instruction
     if(test_break()) {
       // set the end state
@@ -119,6 +120,7 @@ void cpu_exec(unsigned int n){
 #ifdef DEVICE
     device_update();
 #endif
+
     if(sim_state.state != SIM_RUNNING) break;
   }
   if(itrace_n!=-1) print_itrace(itrace_n);
