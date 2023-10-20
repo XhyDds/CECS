@@ -27,7 +27,7 @@ all: $(NAMES)
 
 %: src/$(notdir $(basename %)).c
 	@echo NAMES = $@ > $@.mk 
-	echo SRCS = $(basename $<) >> $@.mk
+	@echo SRCS = $(basename $<) >> $@.mk
 	@echo BASE_PORT = $(BASE_PORT) >> $@.mk
 	@echo -include $(BASE_PORT)/Makefile >> $@.mk
 	@make -s -f $@.mk
