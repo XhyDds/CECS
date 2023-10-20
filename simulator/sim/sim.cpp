@@ -176,8 +176,13 @@ extern "C" void set_csr_ptr(const svOpenArrayHandle mstatus, const svOpenArrayHa
 }
 
 void isa_reg_display() {
-  for (int i = 0; i < 32; i++) {
-    printf("gpr[%d](%s) = 0x%x\n", i, regs[i], cpu_gpr[i]);
+  for (int i = 0; i < 8; i++) {
+    printf("gpr[%d](%s) = 0x%x\tgpr[%d](%s) = 0x%x\tgpr[%d](%s) = 0x%x\tgpr[%d](%s) = 0x%x\n", 
+    i, regs[i], cpu_gpr[i],
+    i+8, regs[i+8], cpu_gpr[i+8],
+    i+16, regs[i+16], cpu_gpr[i+16],
+    i+24, regs[i+24], cpu_gpr[i+24]
+    );
   }
 }
 

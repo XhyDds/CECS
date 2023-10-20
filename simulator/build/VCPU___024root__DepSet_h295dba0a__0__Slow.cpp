@@ -393,7 +393,7 @@ VL_ATTR_COLD void VCPU___024root___stl_sequent__TOP__0(VCPU___024root* vlSelf) {
                                                  (0x1fU 
                                                   & vlSelf->CPU__DOT__alu_src1))
                                               : (vlSelf->CPU__DOT__alu_src0 
-                                                 + vlSelf->CPU__DOT__alu_src1))));
+                                                 - vlSelf->CPU__DOT__alu_src1))));
     }
     vlSelf->uncache_read_wb = ((3U == (0x7fU & vlSelf->inst)) 
                                & (0xaU == (vlSelf->CPU__DOT__alu_res 
