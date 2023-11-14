@@ -14,7 +14,7 @@ module
         alu_res = 32'H0;
         case(alu_ctrl)
             5'B00000:                                                          // add
-                alu_res = alu_src0 - alu_src1;
+                alu_res = alu_src0 + alu_src1;
             5'B10000:                                                          // sub
                 alu_res = alu_src0 - alu_src1;
             5'B00001:                                                          // sll

@@ -197,7 +197,8 @@ void print_itrace(int n) {
     for(int i=0;i<n;i++){
         char buffer[1024];
         disassemble(buffer,1024,(uint64_t)itrace_queue[ptr].pc,(uint8_t *)&itrace_queue[ptr].inst,4);
-        printf("%s\n",buffer);
+        uint64_t pc=itrace_queue[ptr].pc;
+        std::cout<<"0x"<<std::hex<<std::setw(8)<< std::setfill('0')<<pc<<": \t"<<buffer<<std::endl;
         if(ptr==0) ptr=15;
         else ptr--;
     }
