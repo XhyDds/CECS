@@ -138,8 +138,8 @@ module Decode(
             mem_access  = `NO_ACCESS;
             alu_op      = `ADD;
             csr_op      = funct3;
-            rf_we       = |rd;
-            csr_we      = 1'b1;
+            rf_we       = |rd & (~(exp_en|mret_en));
+            csr_we      = ~(exp_en|mret_en);
             alu_rs1_sel = `SRC1_ZERO;
             alu_rs2_sel = `SRC2_CSR;
             wb_rf_sel   = `FROM_CSR;
