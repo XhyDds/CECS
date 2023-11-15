@@ -43,6 +43,7 @@ class alignas(VL_CACHE_LINE_BYTES) VCPU___024root final : public VerilatedModule
         CData/*0:0*/ CPU__DOT__forward1_en;
         CData/*0:0*/ CPU__DOT__forward2_en;
         CData/*0:0*/ CPU__DOT__jump;
+        CData/*0:0*/ CPU__DOT__ID_EX_flush;
         CData/*0:0*/ CPU__DOT__commit_if2;
         CData/*0:0*/ CPU__DOT__commit_id;
         CData/*0:0*/ CPU__DOT__commit_ex;
@@ -79,9 +80,9 @@ class alignas(VL_CACHE_LINE_BYTES) VCPU___024root final : public VerilatedModule
         IData/*31:0*/ CPU__DOT__alu_rs1;
         IData/*31:0*/ CPU__DOT__alu_rs2;
         IData/*31:0*/ CPU__DOT__alu_result_ex;
-        IData/*31:0*/ CPU__DOT__alu_result_ls;
     };
     struct {
+        IData/*31:0*/ CPU__DOT__alu_result_ls;
         IData/*31:0*/ CPU__DOT__alu_result_wb;
         IData/*31:0*/ CPU__DOT__jump_target;
         IData/*31:0*/ CPU__DOT__mem_wdata_ex;

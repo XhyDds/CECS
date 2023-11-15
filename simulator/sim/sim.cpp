@@ -45,7 +45,7 @@ uint64_t g_nr_guest_inst = 0;
 // simulate a single cycle
 void single_cycle() {
 // Lab2 TODO: implement the single cycle function of your cpu
-  add_itrace(dut->pc_cur,dut->inst);
+  if (dut->commit_wb) add_itrace(dut->pc_cur,dut->inst);
 
   dut->clk=1;
   dut->eval();
@@ -95,7 +95,6 @@ void cpu_exec(unsigned int n){
   bool npc_cpu_uncache_pre = 0;
   unsigned int itrace_n=n;
   while (n--) {
-    difftest_step();
     // execute single instruction
     if(test_break()) {
       // set the end state
@@ -110,7 +109,8 @@ void cpu_exec(unsigned int n){
         difftest_sync();
       }
       // Lab3 TODO: use difftest_step function here to execute difftest
-      
+      difftest_step();
+
       g_nr_guest_inst++;
       npc_cpu_uncache_pre = dut->uncache_read_wb;
     }
@@ -198,7 +198,13 @@ void print_itrace(int n) {
         char buffer[1024];
         disassemble(buffer,1024,(uint64_t)itrace_queue[ptr].pc,(uint8_t *)&itrace_queue[ptr].inst,4);
         uint64_t pc=itrace_queue[ptr].pc;
-        std::cout<<"0x"<<std::hex<<std::setw(8)<< std::setfill('0')<<pc<<": \t"<<buffer<<std::endl;
+        uint64_t inst=itrace_queue[ptr].inst;
+        std::cout
+            <<"0x"<<std::hex<<std::setw(8)<< std::setfill('0')
+            <<pc<<": \t"
+            <<"0x"<<std::hex<<std::setw(8)<< std::setfill('0')
+            <<inst<<"\t"
+            <<buffer<<std::endl;
         if(ptr==0) ptr=15;
         else ptr--;
     }

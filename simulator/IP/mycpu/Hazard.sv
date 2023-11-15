@@ -88,8 +88,8 @@ module Hazard(
     assign pc_set           = flush_by_jump;    //next_pc = pc_set ? pc_target : pc + 4;
     assign IF1_IF2_flush    = flush_by_jump;
     assign IF2_ID_flush     = flush_by_jump;
-    assign ID_EX_flush      = flush_by_jump;
-    assign EX_LS_flush      = flush_by_jump;
+    assign ID_EX_flush      = flush_by_jump|stall_by_load_use;
+    assign EX_LS_flush      = 0;
     assign LS_WB_flush      = 0;
 
     // Lab3 TODO: generate pc_stall, IF1_IF2_stall, IF2_ID_stall, ID_EX_stall, EX_LS_stall, LS_WB_stall

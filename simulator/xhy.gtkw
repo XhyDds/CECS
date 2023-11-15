@@ -1,21 +1,23 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Wed Nov 15 10:12:49 2023
+[*] Wed Nov 15 12:35:39 2023
 [*]
 [dumpfile] "/home/xhyvm2/gitwork/labs/COMPSYS/simulator/waveform.vcd"
-[dumpfile_mtime] "Wed Nov 15 09:58:53 2023"
-[dumpfile_size] 19407
+[dumpfile_mtime] "Wed Nov 15 11:20:58 2023"
+[dumpfile_size] 4245417
 [savefile] "/home/xhyvm2/gitwork/labs/COMPSYS/simulator/xhy.gtkw"
-[timestart] 0
+[timestart] 42
 [size] 1844 824
 [pos] -1 -1
-*-0.330973 1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-1.138328 49 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.CPU.
 [sst_width] 233
-[signals_width] 158
+[signals_width] 166
 [sst_expanded] 1
 [sst_vpaned_height] 222
+@200
+-Decode
 @22
 TOP.CPU.PC_inst.pc[31:0]
 TOP.CPU.SegReg_IF2_ID_inst.inst_if2[31:0]
@@ -34,10 +36,26 @@ TOP.CPU.Decode_inst.rf_we[0]
 TOP.CPU.Decode_inst.wb_rf_sel[0]
 @200
 -
+-ALU
 @22
 TOP.CPU.ALU_inst.alu_op[4:0]
 TOP.CPU.ALU_inst.sr1[31:0]
 TOP.CPU.ALU_inst.sr2[31:0]
 TOP.CPU.ALU_inst.result[31:0]
+@200
+-
+-Regs
+@28
+TOP.CPU.Regfile_inst.we
+@22
+TOP.CPU.Regfile_inst.waddr[4:0]
+TOP.CPU.Regfile_inst.wdata[31:0]
+@200
+-
+-Hazard
+@29
+TOP.CPU.Hazard_inst.stall_by_load_use
+@200
+-
 [pattern_trace] 1
 [pattern_trace] 0

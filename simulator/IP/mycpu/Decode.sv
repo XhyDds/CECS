@@ -54,12 +54,12 @@ module Decode(
             // jalr, I_TYPE
             // Lab3 TODO: finish jalr instruction decode
 
-            imm         = {20'b0,inst[31:20]};
+            imm         = {{20{inst[31]}},inst[31:20]};
             mem_access  = `NO_ACCESS;
             alu_op      = `ADD;
             rf_we       = |rd;
-            alu_rs1_sel = `SRC1_REG1;
-            alu_rs2_sel = `SRC2_IMM;
+            alu_rs1_sel = `SRC1_PC;
+            alu_rs2_sel = `SRC2_FOUR;
             wb_rf_sel   = `FROM_ALU;
             br_type     = {1'b1, inst[2], inst[3], inst[1:0]};
         end
@@ -113,7 +113,9 @@ module Decode(
             
             imm         = 0;
             mem_access  = `NO_ACCESS;
-            alu_op      = {((funct3 == 3'h0||funct3==3'h5) && inst[30]), 1'b0, funct3};
+            alu_op      = {((funct3 == 3'h0||funct3==3'h5) && inst[30]),    //sra&sub
+                            (inst[25]), //div&divu等拓展指令
+                            funct3};
             rf_we       = |rd;
             alu_rs1_sel = `SRC1_REG1;
             alu_rs2_sel = `SRC2_REG2;
