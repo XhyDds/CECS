@@ -85,7 +85,7 @@ module Hazard(
     // Lab4 TODO: generate ecall and mret flush signal
 
     // Lab3 TODO: generate pc_set, IF1_IF2_flush, IF2_ID_flush, ID_EX_flush, EX_LS_flush, LS_WB_flush
-    assign pc_set           = ~flush_by_jump;
+    assign pc_set           = flush_by_jump;    //next_pc = pc_set ? pc_target : pc + 4;
     assign IF1_IF2_flush    = flush_by_jump;
     assign IF2_ID_flush     = flush_by_jump;
     assign ID_EX_flush      = flush_by_jump;
