@@ -164,6 +164,7 @@ module DCache #(
             wvalid_pipe         <= wvalid;
         end
     end
+    logic uncache=addr_pipe[31:28]==4'hA;
 
 /*--------------  2 return buffer : cat the return data -------------- */
     always_ff @(posedge clk) begin
@@ -283,7 +284,7 @@ module DCache #(
     wire [BIT_NUM-1:0] rdata_mem, rdata_ret;
     assign rdata_mem    = mem_rdata[hit_way] >> {addr_pipe[BYTE_OFFSET_WIDTH-1:2], 5'b0};
     // Lab6 TODO: generate rdata_ret for uncache
-    assign rdata_ret    = ret_buf >> {addr_pipe[BYTE_OFFSET_WIDTH-1:2], 5'b0};
+    assign rdata_ret    = uncache?{{(BIT_NUM-32){1'b0}},ret_buf[BIT_NUM-1:BIT_NUM-32]}:(ret_buf >> {addr_pipe[BYTE_OFFSET_WIDTH-1:2], 5'b0});//高低？
     assign rdata        = data_from_mem ? rdata_mem[31:0] : rdata_ret[31:0];
 
 /* -------------- 9 LRU replace: choose the way to replace -------------- */
@@ -328,6 +329,9 @@ module DCache #(
             end
 
             // Lab6 TODO：generate wbuf for uncache here
+            if(uncache) begin
+                wbuf <= {{(BIT_NUM-32){1'b0}},wdata_pipe};
+            end
 
             else begin
                 wbuf <= lru_sel ? mem_rdata[1] : mem_rdata[0];
@@ -346,7 +350,8 @@ module DCache #(
         end
         else if(mbuf_we) begin
             // Lab6 TODO: generate maddr_buf for uncache here
-            maddr_buf <= {
+            if(uncache) maddr_buf <= addr_pipe;
+            else maddr_buf <= {
                 tag_rdata[fence_valid_pipe ? addr_cnt[INDEX_WIDTH] : lru_sel][TAG_WIDTH-1:0], 
                 w_index, {BYTE_OFFSET_WIDTH{1'b0}}
             };
@@ -366,14 +371,14 @@ module DCache #(
 
 /* -------------- 14 memory settings -------------- */
     // Lab6 TODO: generate signals for uncache 
-    assign d_raddr  = {addr_pipe[31:BYTE_OFFSET_WIDTH], {BYTE_OFFSET_WIDTH{1'b0}}};
-    assign d_rsize  = 3'h2;
-    assign d_rlen   = WORD_NUM - 1;
+    assign d_raddr  = uncache?addr_pipe :{addr_pipe[31:BYTE_OFFSET_WIDTH], {BYTE_OFFSET_WIDTH{1'b0}}};
+    assign d_rsize  = uncache?rsize_pipe:3'h2;
+    assign d_rlen   = uncache?0         :WORD_NUM - 1;
     assign d_waddr  = maddr_buf;
     assign d_wsize  = 3'h2;
-    assign d_wlen   = WORD_NUM - 1;
+    assign d_wlen   = uncache?0         :WORD_NUM - 1;
     assign d_wdata  = wbuf[31:0];
-    assign d_wstrb  = 4'b1111;
+    assign d_wstrb  = uncache?wstrb_pipe:4'b1111;
 
 /* -------------- 15 main FSM: mainly for read -------------- */
     enum logic [1:0] {IDLE, MISS, REFILL, WAIT_WRITE} state, next_state;
@@ -392,8 +397,10 @@ module DCache #(
         IDLE: begin
             if(rvalid_pipe || wvalid_pipe) begin
                 // Lab6 TODO：generate next_state for uncache here
-
-                if(cache_hit) begin
+                if(uncache) begin
+                    next_state = MISS;
+                end
+                else if(cache_hit) begin
                     next_state = IDLE;
                 end
                 else begin
@@ -413,7 +420,10 @@ module DCache #(
             end
             else if(d_rready && d_rlast) begin
                 // Lab6 TODO: fix next_state to support uncache here
-                next_state = REFILL;
+                if(uncache) begin
+                    next_state = IDLE;
+                end
+                else next_state = REFILL;
             end
             else begin
                 next_state = MISS;
@@ -466,8 +476,13 @@ module DCache #(
         IDLE: begin
             if(rvalid_pipe || wvalid_pipe) begin
                 // Lab6 TODO: generate output for uncache here
-
-                if(cache_hit) begin
+                if(uncache) begin
+                    wbuf_we         = 1;
+                    mbuf_we         = 1;
+                    wfsm_en         = 1;
+                    dcache_miss     = 1;
+                end
+                else if(cache_hit) begin
                     mem_we[hit_way]         = {{(BYTE_NUM-4){1'b0}}, wstrb_pipe} << {addr_pipe[BYTE_OFFSET_WIDTH-1:2], 2'b0};
                     req_buf_we              = 1;
                     lru_hit_update          = 1;
@@ -533,7 +548,7 @@ module DCache #(
     enum logic [1:0] {INIT, WRITE, FINISH} wfsm_state, wfsm_next_state;
 
     // Lab6 TODO: fix write_num generation for uncache here
-    logic [WORD_OFFSET_WIDTH:0] write_num =  WORD_NUM - 1;
+    logic [WORD_OFFSET_WIDTH:0] write_num =  uncache?0:WORD_NUM - 1;
 
     /* counter of write back */
     always_ff @(posedge clk) begin
@@ -562,7 +577,10 @@ module DCache #(
         INIT: begin
             if(wfsm_en) begin
                 // Lab6 TODO: generate wfsm_next_state for uncache here
-                wfsm_next_state = dirty_info ? WRITE : FINISH;
+                if(uncache) begin
+                    wfsm_next_state = FINISH;
+                end
+                else wfsm_next_state = dirty_info ? WRITE : FINISH;
             end
             else begin
                 wfsm_next_state = INIT;
