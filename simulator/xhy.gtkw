@@ -1,21 +1,23 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Wed Nov 15 18:11:53 2023
+[*] Wed Nov 15 20:09:48 2023
 [*]
 [dumpfile] "/home/xhyvm2/gitwork/labs/COMPSYS/simulator/waveform.vcd"
-[dumpfile_mtime] "Wed Nov 15 18:08:33 2023"
-[dumpfile_size] 25087
+[dumpfile_mtime] "Wed Nov 15 20:06:05 2023"
+[dumpfile_size] 65229
 [savefile] "/home/xhyvm2/gitwork/labs/COMPSYS/simulator/xhy.gtkw"
 [timestart] 0
 [size] 1844 824
 [pos] -1 -1
-*-0.652901 1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-2.237864 6 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.CPU.
 [sst_width] 233
 [signals_width] 223
 [sst_expanded] 1
 [sst_vpaned_height] 222
+@28
+TOP.CPU.commit_wb[0]
 @200
 -Decode
 @22
@@ -34,12 +36,6 @@ TOP.CPU.Decode_inst.rd[4:0]
 @28
 TOP.CPU.Decode_inst.rf_we[0]
 TOP.CPU.Decode_inst.wb_rf_sel[0]
-TOP.CPU.Decode_inst.csr_op[2:0]
-TOP.CPU.Decode_inst.csr_we[0]
-@22
-TOP.CPU.Decode_inst.exp_code[15:0]
-@29
-TOP.CPU.Decode_inst.exp_en[0]
 @200
 -
 -ALU
@@ -64,9 +60,6 @@ TOP.CPU.Regfile_inst.wdata[31:0]
 TOP.CPU.Hazard_inst.stall_by_load_use
 TOP.CPU.Hazard_inst.flush_by_jump
 TOP.CPU.Hazard_inst.flush_by_load_use
-TOP.CPU.Hazard_inst.flush_by_csr
-TOP.CPU.Hazard_inst.flush_by_exp_ex
-TOP.CPU.Hazard_inst.flush_by_exp_wb
 @200
 -
 -csr
@@ -80,5 +73,25 @@ TOP.CPU.CSR_inst.rdata[31:0]
 @200
 -
 -ecall
+-
+-AXI
+@28
+TOP.CPU.axi_arbiter_inst.i_rready[0]
+TOP.CPU.axi_arbiter_inst.i_rvalid[0]
+@22
+TOP.CPU.axi_arbiter_inst.araddr[31:0]
+TOP.CPU.axi_arbiter_inst.arlen[7:0]
+@29
+TOP.CPU.axi_arbiter_inst.arsize[2:0]
+@28
+TOP.CPU.axi_arbiter_inst.arready[0]
+TOP.CPU.axi_arbiter_inst.arvalid[0]
+TOP.CPU.axi_arbiter_inst.rvalid[0]
+TOP.CPU.axi_arbiter_inst.rready[0]
+TOP.CPU.axi_arbiter_inst.rlast[0]
+@22
+TOP.CPU.axi_arbiter_inst.rdata[31:0]
+@28
+TOP.CPU.axi_arbiter_inst.r_crt[2:0]
 [pattern_trace] 1
 [pattern_trace] 0
