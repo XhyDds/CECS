@@ -51,6 +51,16 @@ class alignas(VL_CACHE_LINE_BYTES) VCPU___024root final : public VerilatedModule
         CData/*0:0*/ CPU__DOT__jump;
         CData/*0:0*/ CPU__DOT__pc_set;
         CData/*0:0*/ CPU__DOT__ID_EX_flush;
+        CData/*0:0*/ CPU__DOT__EX_LS_flush;
+        CData/*0:0*/ CPU__DOT__mret_en;
+        CData/*0:0*/ CPU__DOT__exp_en_id;
+        CData/*0:0*/ CPU__DOT__exp_en_ex;
+        CData/*0:0*/ CPU__DOT__exp_en_ls;
+        CData/*0:0*/ CPU__DOT__exp_en_wb;
+        CData/*0:0*/ CPU__DOT__mret_en_id;
+        CData/*0:0*/ CPU__DOT__mret_en_ex;
+        CData/*0:0*/ CPU__DOT__mret_en_ls;
+        CData/*0:0*/ CPU__DOT__mret_en_wb;
         CData/*0:0*/ CPU__DOT__commit_if2;
         CData/*0:0*/ CPU__DOT__commit_id;
         CData/*0:0*/ CPU__DOT__commit_ex;
@@ -64,8 +74,14 @@ class alignas(VL_CACHE_LINE_BYTES) VCPU___024root final : public VerilatedModule
         SData/*11:0*/ CPU__DOT__csr_waddr_ex;
         SData/*11:0*/ CPU__DOT__csr_waddr_ls;
         SData/*11:0*/ CPU__DOT__csr_waddr_wb;
+        SData/*15:0*/ CPU__DOT__exp_code_id;
+        SData/*15:0*/ CPU__DOT__exp_code_ex;
+        SData/*15:0*/ CPU__DOT__exp_code_ls;
+        SData/*15:0*/ CPU__DOT__exp_code_wb;
         VL_OUT(pc_cur,31,0);
         VL_OUT(inst,31,0);
+    };
+    struct {
         IData/*31:0*/ CPU__DOT__pc_if2;
         IData/*31:0*/ CPU__DOT__pc_id;
         IData/*31:0*/ CPU__DOT__pc_ex;
@@ -80,8 +96,6 @@ class alignas(VL_CACHE_LINE_BYTES) VCPU___024root final : public VerilatedModule
         IData/*31:0*/ CPU__DOT__next_pc;
         IData/*31:0*/ CPU__DOT__imm_id;
         IData/*31:0*/ CPU__DOT__imm_ex;
-    };
-    struct {
         IData/*31:0*/ CPU__DOT__rf_wdata_wb;
         IData/*31:0*/ CPU__DOT__rf_rdata1_ex;
         IData/*31:0*/ CPU__DOT__rf_rdata2_ex;
@@ -101,6 +115,10 @@ class alignas(VL_CACHE_LINE_BYTES) VCPU___024root final : public VerilatedModule
         IData/*31:0*/ CPU__DOT__csr_wdata_ls;
         IData/*31:0*/ CPU__DOT__csr_wdata_wb;
         IData/*31:0*/ CPU__DOT__csr_rdata_ex;
+        IData/*31:0*/ CPU__DOT__mstatus_global;
+        IData/*31:0*/ CPU__DOT__mtvec_global;
+        IData/*31:0*/ CPU__DOT__mepc_global;
+        IData/*31:0*/ CPU__DOT__mcause_in;
         IData/*31:0*/ CPU__DOT__PC_inst__DOT__pc_reg;
         IData/*31:0*/ CPU__DOT__ICache_inst__DOT__rdata_temp;
         IData/*31:0*/ CPU__DOT__Regfile_inst__DOT__unnamedblk1__DOT__i;

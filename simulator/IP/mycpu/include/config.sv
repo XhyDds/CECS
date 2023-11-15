@@ -80,3 +80,24 @@
 `define MRET            1
 `define FENCEI          2
 `define CSR_RW          3
+
+//Exception
+`define EXC_INST_ADDR_MISALIGNED    0
+`define EXC_INST_ACCESS_FAULT       1
+`define EXC_ILLEGAL_INST            2
+`define EXC_BREAKPOINT              3
+`define EXC_LOAD_ADDR_MISALIGNED    4
+`define EXC_LOAD_ACCESS_FAULT       5
+`define EXC_STORE_ADDR_MISALIGNED   6
+`define EXC_STORE_ACCESS_FAULT      7
+`define EXC_ECALL                   8
+
+//Mode
+`define MODE_U  0
+`define MODE_S  1
+`define MODE_H  2
+`define MODE_M  3
+
+//
+`define INST_ECALL 32'h0000_0073
+`define INST_MRET  32'h3020_0073

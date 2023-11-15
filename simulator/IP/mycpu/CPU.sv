@@ -50,6 +50,12 @@ module CPU#(
     logic [ 0:0]    EX_LS_stall, EX_LS_flush;
     logic [ 0:0]    LS_WB_stall, LS_WB_flush;
 
+    logic [31:0]    mstatus_global,mtvec_global, mepc_global, mcause_in;
+    logic [ 0:0]    exception_en, mret_en;
+    logic [ 0:0]    exp_en_id,exp_en_ex,exp_en_ls,exp_en_wb;
+    logic [ 0:0]    mret_en_id,mret_en_ex,mret_en_ls,mret_en_wb;
+    logic [15:0]    exp_code_id, exp_code_ex, exp_code_ls, exp_code_wb;
+
     logic [ 0:0]    commit_if1, commit_if2, commit_id, commit_ex, commit_ls;
 
     assign inst = inst_wb;
@@ -125,7 +131,10 @@ module CPU#(
         .alu_rs1_sel    (alu_rs1_sel_id),
         .alu_rs2_sel    (alu_rs2_sel_id),
         .wb_rf_sel      (wb_rf_sel_id),
-        .br_type        (br_type_id)
+        .br_type        (br_type_id),
+        .exp_code       (exp_code_id),
+        .exp_en         (exp_en_id),
+        .mret_en        (mret_en_id)
     );
     Regfile  Regfile_inst (
         .clk            (clk),
@@ -146,7 +155,14 @@ module CPU#(
         .waddr       (csr_waddr_wb),
         .we          (csr_we_wb),
         .wdata       (csr_wdata_wb),
-        .rdata       (csr_rdata_id)
+        .rdata       (csr_rdata_id),
+        .mcause_in   (mcause_in),
+        .pc_wb       (pc_wb),
+        .mstatus_global (mstatus_global),
+        .mtvec_global   (mtvec_global),
+        .mepc_global    (mepc_global),
+        .exception_en   (exception_en),
+        .mret_en        (mret_en_wb)
     );
 
 
@@ -174,6 +190,9 @@ module CPU#(
         .rf_we_id       (rf_we_id),
         .csr_we_id      (csr_we_id),
         .csr_waddr_id   (csr_waddr_id),
+        .exp_code_id    (exp_code_id),
+        .exp_en_id      (exp_en_id),
+        .mret_en_id     (mret_en_id),
         .pc_ex          (pc_ex),
         .inst_ex        (inst_ex),
         .rdata1_ex      (rf_rdata1_ex),
@@ -190,9 +209,11 @@ module CPU#(
         .rf_we_ex       (rf_we_ex),
         .csr_we_ex      (csr_we_ex),
         .csr_waddr_ex   (csr_waddr_ex),
+        .exp_code_ex    (exp_code_ex),
+        .exp_en_ex      (exp_en_ex),
+        .mret_en_ex     (mret_en_ex),
         .commit_id      (commit_id),
         .commit_ex      (commit_ex)
-
     );
 
     /* EX stage */
@@ -275,6 +296,9 @@ module CPU#(
         .csr_we_ex      (csr_we_ex),
         .csr_waddr_ex   (csr_waddr_ex),
         .csr_wdata_ex   (csr_wdata_ex),
+        .exp_code_ex    (exp_code_ex),
+        .exp_en_ex      (exp_en_ex),
+        .mret_en_ex     (mret_en_ex),
         .pc_ls          (pc_ls),
         .inst_ls        (inst_ls),
         .alu_result_ls  (alu_result_ls),
@@ -284,6 +308,9 @@ module CPU#(
         .csr_we_ls      (csr_we_ls),
         .csr_waddr_ls   (csr_waddr_ls),
         .csr_wdata_ls   (csr_wdata_ls),
+        .exp_code_ls    (exp_code_ls),
+        .exp_en_ls      (exp_en_ls),
+        .mret_en_ls     (mret_en_ls),
         .commit_ex      (commit_ex),
         .commit_ls      (commit_ls)
     );
@@ -326,6 +353,9 @@ module CPU#(
         .csr_we_ls          (csr_we_ls),
         .csr_waddr_ls       (csr_waddr_ls),
         .csr_wdata_ls       (csr_wdata_ls),
+        .exp_code_ls        (exp_code_ls),
+        .exp_en_ls          (exp_en_ls),
+        .mret_en_ls         (mret_en_ls),
         .pc_wb              (pc_wb),
         .inst_wb            (inst_wb),
         .alu_result_wb      (alu_result_wb),
@@ -335,6 +365,9 @@ module CPU#(
         .csr_we_wb          (csr_we_wb),
         .csr_waddr_wb       (csr_waddr_wb),
         .csr_wdata_wb       (csr_wdata_wb),
+        .exp_code_wb        (exp_code_wb),
+        .exp_en_wb          (exp_en_wb),
+        .mret_en_wb         (mret_en_wb),
         .commit_ls          (commit_ls),
         .commit_wb          (commit_wb),
         .read_ls            (mem_access_ls[`LOAD_BIT]),
@@ -350,7 +383,13 @@ module CPU#(
         .sel            (wb_rf_sel_wb),
         .dout           (rf_wdata_wb)
     );
-
+    Exp_Commit exp_commit(
+        .exp_en         (exp_en_wb  ),
+        .exp_code       (exp_code_wb),
+        .mstatus        (mstatus_global),
+        .mcause_in      (mcause_in   ),
+        .exception_en   (exception_en)
+    );
 
     /* Hazard */
     Hazard  Hazard_inst (
@@ -369,6 +408,12 @@ module CPU#(
 
         .csr_we_ex          (csr_we_ex),
         .pc_ex              (pc_ex),
+        .exp_en_ex          (exp_en_ex),
+        .exp_en_wb          (exp_en_wb),
+        .mtvec              (mtvec_global),
+        .mret_en_ex         (mret_en_ex),
+        .mret_en_wb         (mret_en_wb),
+        .mepc               (mepc_global),
 
         .mem_access_ex      (mem_access_ex),
         .rf_rd_ex           (inst_ex[11:7]),

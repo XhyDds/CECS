@@ -15,6 +15,9 @@ module SegReg_LS_WB#(
     input  logic [ 0:0] csr_we_ls,
     input  logic [11:0] csr_waddr_ls,
     input  logic [31:0] csr_wdata_ls,
+    input  logic [15:0] exp_code_ls,
+    input  logic [ 0:0] exp_en_ls,
+    input  logic [ 0:0] mret_en_ls,
     input  logic [ 0:0] commit_ls,
     input  logic [ 0:0] read_ls,
 
@@ -27,6 +30,9 @@ module SegReg_LS_WB#(
     output logic [ 0:0] csr_we_wb,
     output logic [11:0] csr_waddr_wb,
     output logic [31:0] csr_wdata_wb,
+    output logic [15:0] exp_code_wb,
+    output logic [ 0:0] exp_en_wb,
+    output logic [ 0:0] mret_en_wb,
     output logic [ 0:0] commit_wb,
     output logic [ 0:0] uncache_read_wb
 );
@@ -41,6 +47,9 @@ module SegReg_LS_WB#(
             csr_we_wb       <= 1'h0;
             csr_waddr_wb    <= 12'h0;
             csr_wdata_wb    <= 32'h0;
+            exp_code_wb     <= 16'h0;
+            exp_en_wb       <= 1'h0;
+            mret_en_wb      <= 1'h0;
             commit_wb       <= 1'h0;
             uncache_read_wb <= 1'h0;
         end 
@@ -54,6 +63,9 @@ module SegReg_LS_WB#(
             csr_we_wb       <= csr_we_ls;
             csr_waddr_wb    <= csr_waddr_ls;
             csr_wdata_wb    <= csr_wdata_ls;
+            exp_code_wb     <= exp_code_ls;
+            exp_en_wb       <= exp_en_ls;
+            mret_en_wb      <= mret_en_ls;
             commit_wb       <= commit_ls;
             uncache_read_wb <= read_ls && alu_result_ls[31:28] == 4'ha;
         end
