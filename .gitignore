@@ -1,0 +1,7 @@
+*.vcd
+*.o
+*.a
+*.elf
+*.S
+*.exe
+*.bin
