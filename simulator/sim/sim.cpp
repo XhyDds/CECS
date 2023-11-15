@@ -35,8 +35,10 @@ void set_state() {
   sim_cpu.pc = dut->pc_cur;
   memcpy(&sim_cpu.gpr[0], cpu_gpr, 4 * 32);
   // Lab4 TODO: set the state of csr to sim_cpu
-//   sim_cpu.csr.mepc=&cpu_mepc[0];
-//...
+  sim_cpu.csr.mepc=cpu_mepc[0];
+  sim_cpu.csr.mcause=cpu_mcause[0];
+  sim_cpu.csr.mstatus=cpu_mstatus[0];
+  sim_cpu.csr.mtvec=cpu_mtvec[0];
 }
 
 // num of executed instruction
