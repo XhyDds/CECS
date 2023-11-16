@@ -123,7 +123,7 @@ module Hazard(
             pc_set_target = mtvec;
         end
         else if(mret_en_wb) begin
-            pc_set_target = mepc+4; //能+4吗
+            pc_set_target = mepc; //能+4吗
         end
         else if(exp_en_ex) begin
             pc_set_target = 32'h8000_0000;  //随意

@@ -15,7 +15,7 @@ module Exp_Commit(
         mcause_in = 0;
         if(exp_code[`EXC_ECALL])
             if(exp_en) begin
-                case(mcause_in[2:1])
+                case(mstatus[2:1])
                     `MODE_U: mcause_in = 8;
                     `MODE_S: mcause_in = 9;
                     `MODE_H: mcause_in = 10;

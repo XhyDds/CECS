@@ -143,7 +143,7 @@ module Decode(
             alu_rs1_sel = `SRC1_ZERO;
             alu_rs2_sel = `SRC2_CSR;
             wb_rf_sel   = `FROM_CSR;
-            // br_type     = //TOBE DONE
+            br_type     =  5'b0;
         end
         default: begin
             imm         = 0;

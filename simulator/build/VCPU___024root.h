@@ -115,9 +115,6 @@ class alignas(VL_CACHE_LINE_BYTES) VCPU___024root final : public VerilatedModule
         IData/*31:0*/ CPU__DOT__csr_wdata_ls;
         IData/*31:0*/ CPU__DOT__csr_wdata_wb;
         IData/*31:0*/ CPU__DOT__csr_rdata_ex;
-        IData/*31:0*/ CPU__DOT__mstatus_global;
-        IData/*31:0*/ CPU__DOT__mtvec_global;
-        IData/*31:0*/ CPU__DOT__mepc_global;
         IData/*31:0*/ CPU__DOT__mcause_in;
         IData/*31:0*/ CPU__DOT__PC_inst__DOT__pc_reg;
         IData/*31:0*/ CPU__DOT__ICache_inst__DOT__rdata_temp;

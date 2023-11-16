@@ -18,6 +18,10 @@ module CSR(
 );
     import "DPI-C" function void set_csr_ptr(input logic [31:0] m1 [], input logic [31:0] m2 [], input logic [31:0] m3 [], input logic [31:0] m4 []);
 
+    assign mepc_global = mepc;
+    assign mstatus_global = mstatus;
+    assign mtvec_global = mtvec;
+
     reg [31:0] mstatus;
     always_ff @(posedge clk) begin
         if(!rstn) begin
