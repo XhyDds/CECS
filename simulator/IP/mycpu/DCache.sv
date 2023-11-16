@@ -398,7 +398,15 @@ module DCache #(
             if(rvalid_pipe || wvalid_pipe) begin
                 // Lab6 TODO：generate next_state for uncache here
                 if(uncache) begin
-                    next_state = MISS;
+                    if(wvalid_pipe) begin
+                        next_state = WAIT_WRITE;
+                    end
+                    else if(rvalid_pipe) begin
+                        next_state = MISS;
+                    end
+                    else begin
+                        next_state = IDLE;
+                    end
                 end
                 else if(cache_hit) begin
                     next_state = IDLE;
@@ -421,7 +429,7 @@ module DCache #(
             else if(d_rready && d_rlast) begin
                 // Lab6 TODO: fix next_state to support uncache here
                 if(uncache) begin
-                    next_state = IDLE;
+                    next_state = WAIT_WRITE;
                 end
                 else next_state = REFILL;
             end
@@ -477,10 +485,10 @@ module DCache #(
             if(rvalid_pipe || wvalid_pipe) begin
                 // Lab6 TODO: generate output for uncache here
                 if(uncache) begin
-                    wbuf_we         = 1;
                     mbuf_we         = 1;
-                    wfsm_en         = 1;
                     dcache_miss     = 1;
+                    wbuf_we         = 1;
+                    wfsm_en         = 1;
                 end
                 else if(cache_hit) begin
                     mem_we[hit_way]         = {{(BYTE_NUM-4){1'b0}}, wstrb_pipe} << {addr_pipe[BYTE_OFFSET_WIDTH-1:2], 2'b0};
@@ -577,8 +585,11 @@ module DCache #(
         INIT: begin
             if(wfsm_en) begin
                 // Lab6 TODO: generate wfsm_next_state for uncache here
-                if(uncache) begin
+                if(uncache && wstrb_pipe==4'b0000) begin
                     wfsm_next_state = FINISH;
+                end
+                else if(uncache) begin
+                    wfsm_next_state = WRITE;
                 end
                 else wfsm_next_state = dirty_info ? WRITE : FINISH;
             end

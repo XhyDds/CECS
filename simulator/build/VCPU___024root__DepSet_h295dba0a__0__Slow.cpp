@@ -466,7 +466,6 @@ extern const VlUnpacked<CData/*0:0*/, 64> VCPU__ConstPool__TABLE_h07d257b7_0;
 extern const VlUnpacked<CData/*0:0*/, 64> VCPU__ConstPool__TABLE_h8a061d4b_0;
 extern const VlUnpacked<CData/*0:0*/, 64> VCPU__ConstPool__TABLE_h547d70dc_0;
 extern const VlUnpacked<CData/*1:0*/, 64> VCPU__ConstPool__TABLE_hb934d788_0;
-extern const VlUnpacked<CData/*1:0*/, 256> VCPU__ConstPool__TABLE_h32914a45_0;
 extern const VlUnpacked<CData/*0:0*/, 128> VCPU__ConstPool__TABLE_h5ca5caf7_0;
 extern const VlUnpacked<CData/*0:0*/, 128> VCPU__ConstPool__TABLE_h57739968_0;
 extern const VlUnpacked<CData/*1:0*/, 128> VCPU__ConstPool__TABLE_h889f6aab_0;
@@ -493,12 +492,10 @@ VL_ATTR_COLD void VCPU___024root___stl_sequent__TOP__0(VCPU___024root* vlSelf) {
     __Vtableidx2 = 0;
     CData/*7:0*/ __Vtableidx3;
     __Vtableidx3 = 0;
-    CData/*7:0*/ __Vtableidx4;
+    CData/*6:0*/ __Vtableidx4;
     __Vtableidx4 = 0;
-    CData/*6:0*/ __Vtableidx5;
+    CData/*5:0*/ __Vtableidx5;
     __Vtableidx5 = 0;
-    CData/*5:0*/ __Vtableidx6;
-    __Vtableidx6 = 0;
     VlWide<4>/*127:0*/ __Vtemp_h5338566c__0;
     VlWide<4>/*127:0*/ __Vtemp_hea33821c__0;
     VlWide<4>/*127:0*/ __Vtemp_hfd92b8e8__0;
@@ -777,9 +774,6 @@ VL_ATTR_COLD void VCPU___024root___stl_sequent__TOP__0(VCPU___024root* vlSelf) {
     vlSelf->CPU__DOT__DCache_inst__DOT__dirty_refill = 0U;
     vlSelf->CPU__DOT__DCache_inst__DOT__lru_refill_update = 0U;
     vlSelf->CPU__DOT__DCache_inst__DOT__write_counter_reset = 0U;
-    if ((0U == (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_state))) {
-        vlSelf->CPU__DOT__DCache_inst__DOT__write_counter_reset = 1U;
-    }
     vlSelf->rready = 0U;
     vlSelf->arvalid = 0U;
     vlSelf->awaddr = vlSelf->CPU__DOT__DCache_inst__DOT__maddr_buf;
@@ -923,9 +917,9 @@ VL_ATTR_COLD void VCPU___024root___stl_sequent__TOP__0(VCPU___024root* vlSelf) {
     }
     vlSelf->CPU__DOT__d_rvalid = 0U;
     vlSelf->CPU__DOT__d_wvalid = 0U;
+    vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_reset = 0U;
     vlSelf->CPU__DOT__d_rready = 0U;
     vlSelf->CPU__DOT__d_rlast = 0U;
-    vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_reset = 0U;
     vlSelf->CPU__DOT__mcause_global = 0U;
     if ((2U & (IData)(vlSelf->CPU__DOT__priv_vec_wb))) {
         vlSelf->CPU__DOT__mcause_global = 0xbU;
@@ -1060,7 +1054,7 @@ VL_ATTR_COLD void VCPU___024root___stl_sequent__TOP__0(VCPU___024root* vlSelf) {
                                               ? 0U : 3U));
         }
     }
-    __Vtableidx5 = (((IData)(vlSelf->CPU__DOT__d_wvalid) 
+    __Vtableidx4 = (((IData)(vlSelf->CPU__DOT__d_wvalid) 
                      << 6U) | (((IData)(vlSelf->awready) 
                                 << 5U) | (((IData)(vlSelf->CPU__DOT__d_wlast) 
                                            << 4U) | 
@@ -1070,8 +1064,8 @@ VL_ATTR_COLD void VCPU___024root___stl_sequent__TOP__0(VCPU___024root* vlSelf) {
                                                << 2U) 
                                               | (IData)(vlSelf->CPU__DOT__axi_arbiter_inst__DOT__w_crt))))));
     vlSelf->CPU__DOT__axi_arbiter_inst__DOT__w_nxt 
-        = VCPU__ConstPool__TABLE_hf616aee3_0[__Vtableidx5];
-    __Vtableidx6 = (((IData)(vlSelf->CPU__DOT__d_bready) 
+        = VCPU__ConstPool__TABLE_hf616aee3_0[__Vtableidx4];
+    __Vtableidx5 = (((IData)(vlSelf->CPU__DOT__d_bready) 
                      << 5U) | (((IData)(vlSelf->bvalid) 
                                 << 4U) | (((IData)(vlSelf->wready) 
                                            << 3U) | 
@@ -1079,17 +1073,17 @@ VL_ATTR_COLD void VCPU___024root___stl_sequent__TOP__0(VCPU___024root* vlSelf) {
                                             << 2U) 
                                            | (IData)(vlSelf->CPU__DOT__axi_arbiter_inst__DOT__w_crt)))));
     vlSelf->CPU__DOT__d_wready = VCPU__ConstPool__TABLE_h02f04120_0
-        [__Vtableidx6];
+        [__Vtableidx5];
     vlSelf->CPU__DOT__d_bvalid = VCPU__ConstPool__TABLE_h8900deca_0
-        [__Vtableidx6];
+        [__Vtableidx5];
     vlSelf->bready = VCPU__ConstPool__TABLE_h3f1e26a2_0
-        [__Vtableidx6];
+        [__Vtableidx5];
     vlSelf->awvalid = VCPU__ConstPool__TABLE_h07d257b7_0
-        [__Vtableidx6];
+        [__Vtableidx5];
     vlSelf->wvalid = VCPU__ConstPool__TABLE_h8a061d4b_0
-        [__Vtableidx6];
+        [__Vtableidx5];
     vlSelf->wlast = VCPU__ConstPool__TABLE_h547d70dc_0
-        [__Vtableidx6];
+        [__Vtableidx5];
     vlSelf->CPU__DOT__Branch_inst__DOT__is_jalr = (
                                                    (~ 
                                                     ((IData)(vlSelf->CPU__DOT__br_type_ex) 
@@ -1281,6 +1275,33 @@ VL_ATTR_COLD void VCPU___024root___stl_sequent__TOP__0(VCPU___024root* vlSelf) {
     if ((2U & (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__state))) {
         if ((1U & (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__state))) {
             vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_reset = 1U;
+        }
+    }
+    if ((0U == (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_state))) {
+        vlSelf->CPU__DOT__DCache_inst__DOT__write_counter_reset = 1U;
+        vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_next_state 
+            = ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_en)
+                ? (((0xaU == (vlSelf->CPU__DOT__DCache_inst__DOT__addr_pipe 
+                              >> 0x1cU)) & (0U == (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wstrb_pipe)))
+                    ? 2U : ((0xaU == (vlSelf->CPU__DOT__DCache_inst__DOT__addr_pipe 
+                                      >> 0x1cU)) ? 1U
+                             : ((1U & (vlSelf->CPU__DOT__DCache_inst__DOT__dirty_table
+                                       [(1U & ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__fence_valid_pipe)
+                                                ? ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__addr_cnt) 
+                                                   >> 4U)
+                                                : (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__lru_sel)))] 
+                                       >> (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__w_index)))
+                                 ? 1U : 2U))) : 0U);
+    } else {
+        vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_next_state 
+            = ((1U == (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_state))
+                ? ((IData)(vlSelf->CPU__DOT__d_bvalid)
+                    ? 2U : 1U) : ((2U == (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_state))
+                                   ? ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_reset)
+                                       ? 0U : 2U) : 0U));
+    }
+    if ((2U & (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__state))) {
+        if ((1U & (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__state))) {
             if (vlSelf->CPU__DOT__DCache_inst__DOT__fence_valid_pipe) {
                 vlSelf->CPU__DOT__DCache_inst__DOT__dirty_clean_all 
                     = ((0U == (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__addr_cnt)) 
@@ -1341,13 +1362,16 @@ VL_ATTR_COLD void VCPU___024root___stl_sequent__TOP__0(VCPU___024root* vlSelf) {
                              & (IData)(vlSelf->CPU__DOT__d_rlast))
                              ? ((0xaU == (vlSelf->CPU__DOT__DCache_inst__DOT__addr_pipe 
                                           >> 0x1cU))
-                                 ? 0U : 2U) : 1U));
+                                 ? 3U : 2U) : 1U));
             vlSelf->CPU__DOT__dcache_miss = 1U;
         } else if (((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__rvalid_pipe) 
                     | (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wvalid_pipe))) {
             if ((0xaU == (vlSelf->CPU__DOT__DCache_inst__DOT__addr_pipe 
                           >> 0x1cU))) {
-                vlSelf->CPU__DOT__DCache_inst__DOT__next_state = 1U;
+                vlSelf->CPU__DOT__DCache_inst__DOT__next_state 
+                    = ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wvalid_pipe)
+                        ? 3U : ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__rvalid_pipe)
+                                 ? 1U : 0U));
                 vlSelf->CPU__DOT__dcache_miss = 1U;
             } else {
                 vlSelf->CPU__DOT__DCache_inst__DOT__next_state 
@@ -1375,29 +1399,6 @@ VL_ATTR_COLD void VCPU___024root___stl_sequent__TOP__0(VCPU___024root* vlSelf) {
                                            | (IData)(vlSelf->CPU__DOT__ICache_inst__DOT__state)))));
     vlSelf->CPU__DOT__ICache_inst__DOT__next_state 
         = VCPU__ConstPool__TABLE_hb934d788_0[__Vtableidx1];
-    __Vtableidx3 = (((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_reset) 
-                     << 7U) | (((IData)(vlSelf->CPU__DOT__d_bvalid) 
-                                << 6U) | ((((1U & (
-                                                   vlSelf->CPU__DOT__DCache_inst__DOT__dirty_table
-                                                   [
-                                                   (1U 
-                                                    & ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__fence_valid_pipe)
-                                                        ? 
-                                                       ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__addr_cnt) 
-                                                        >> 4U)
-                                                        : (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__lru_sel)))] 
-                                                   >> (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__w_index)))
-                                             ? 1U : 2U) 
-                                           << 4U) | 
-                                          (((0xaU == 
-                                             (vlSelf->CPU__DOT__DCache_inst__DOT__addr_pipe 
-                                              >> 0x1cU)) 
-                                            << 3U) 
-                                           | (((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_en) 
-                                               << 2U) 
-                                              | (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_state))))));
-    vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_next_state 
-        = VCPU__ConstPool__TABLE_h32914a45_0[__Vtableidx3];
     vlSelf->CPU__DOT__IF2_ID_stall = ((IData)(vlSelf->CPU__DOT__Hazard_inst__DOT__stall_by_load_use) 
                                       | (IData)(vlSelf->CPU__DOT__dcache_miss));
     vlSelf->CPU__DOT__alu_rs2 = ((2U & (IData)(vlSelf->CPU__DOT__alu_rs2_sel_ex))
@@ -1496,7 +1497,7 @@ VL_ATTR_COLD void VCPU___024root___stl_sequent__TOP__0(VCPU___024root* vlSelf) {
                                                  ? 
                                                 (- vlSelf->CPU__DOT__alu_rs1)
                                                  : vlSelf->CPU__DOT__alu_rs1);
-    __Vtableidx4 = (((IData)(vlSelf->CPU__DOT__i_rvalid) 
+    __Vtableidx3 = (((IData)(vlSelf->CPU__DOT__i_rvalid) 
                      << 7U) | (((IData)(vlSelf->CPU__DOT__d_rvalid) 
                                 << 6U) | (((IData)(vlSelf->arready) 
                                            << 5U) | 
@@ -1506,7 +1507,7 @@ VL_ATTR_COLD void VCPU___024root___stl_sequent__TOP__0(VCPU___024root* vlSelf) {
                                                << 3U) 
                                               | (IData)(vlSelf->CPU__DOT__axi_arbiter_inst__DOT__r_crt))))));
     vlSelf->CPU__DOT__axi_arbiter_inst__DOT__r_nxt 
-        = VCPU__ConstPool__TABLE_h66fd1b2c_0[__Vtableidx4];
+        = VCPU__ConstPool__TABLE_h66fd1b2c_0[__Vtableidx3];
     vlSelf->CPU__DOT__pc_stall = ((IData)(vlSelf->CPU__DOT__Hazard_inst__DOT__stall_by_load_use) 
                                   | ((IData)(vlSelf->CPU__DOT__dcache_miss) 
                                      | (IData)(vlSelf->CPU__DOT__icache_miss)));
