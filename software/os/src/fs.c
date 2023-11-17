@@ -2,6 +2,8 @@
 #include <debug.h>
 #include <device.h>
 
+enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_EVENTS, FD_FB, FD_DISPINFO};
+
 typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
 
@@ -15,8 +17,6 @@ typedef struct {
   size_t  open_offset;
 } Finfo;
 
-enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_EVENTS, FD_FB, FD_DISPINFO};
-
 /* This is the information about all files in disk. */
 static Finfo file_table[] __attribute__((used)) = {
   [FD_STDIN]    = {"stdin",           0, 0, 0, invalid_read,  invalid_write},
@@ -27,6 +27,21 @@ static Finfo file_table[] __attribute__((used)) = {
   [FD_DISPINFO] = {"/proc/dispinfo",  0, 0, 0, invalid_read,  invalid_write},
   #include "files.h"
 };
+
+size_t find_offset(const char *filename){
+    size_t disk_offset=0;
+    for(int i=0;i<42;i++){
+        Finfo file=file_table[i];
+        if(file.name!=NULL)
+            if(strcmp(file.name,filename)==0){
+                // printf("%s", file.name);
+                // printf("%d", file.disk_offset);
+                disk_offset=file.disk_offset;
+                break;
+            }
+    }
+    return disk_offset;
+}
 
 /* Init the file system. */
 void init_fs() {

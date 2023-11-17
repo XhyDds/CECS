@@ -9,6 +9,28 @@
 
 static uintptr_t elf_load(const char *filename) {
     // Lab7 TODO: implement the loader
+    //1
+    Elf_Ehdr elf_h;
+    size_t  disk_offset=find_offset(filename);
+    Log("disk_offset=%d",disk_offset);
+    ramdisk_read((void*)&elf_h, disk_offset, sizeof(Elf_Ehdr));
+    // assert(elf_h.e_ident==0x464C457F);//0x464C457F
+    assert(elf_h.e_machine == EM_RISCV);
+    //2
+    Elf_Phdr elf_ph;
+    size_t ph_offset=elf_h.e_phoff;
+    for(int j=0;j<elf_h.e_phnum;j++){
+        ramdisk_read((void*)&elf_ph, ph_offset+j*elf_h.e_phentsize, sizeof(Elf_Phdr));
+        if(elf_ph.p_type == PT_LOAD){
+            ramdisk_read((void*)elf_ph.p_vaddr, disk_offset+elf_ph.p_offset, elf_ph.p_filesz);
+            Log("elf_ph.p_vaddr:%x p_offset:%x",elf_ph.p_vaddr,elf_ph.p_offset);
+            memset((void*)(elf_ph.p_vaddr+elf_ph.p_filesz), 0, elf_ph.p_memsz-elf_ph.p_filesz);
+        }
+        // ph_offset+=elf_h.e_phentsize;
+    }
+    //3
+    asm volatile("fence.i");
+    return elf_h.e_entry;
 }
 
 void user_naive_load(const char *filename) {
