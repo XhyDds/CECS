@@ -7,9 +7,7 @@ void __timer_init() {
 void __timer_uptime(DEV_TIMER_UPTIME_T *uptime) {
   // Lab6 TODO: implement uptime MMIO
   // hint: use function `inl` and RTC_ADDR to access RTC MMIO
-  printf("1");
-  uptime->us = (uint64_t)(inl(RTC_ADDR+4)<<32+inl(RTC_ADDR));
-  printf("2");
+  uptime->us = (uint64_t)((inl(RTC_ADDR+4)<<32)+inl(RTC_ADDR));
 }
 
 void __timer_rtc(DEV_TIMER_RTC_T *rtc) {
