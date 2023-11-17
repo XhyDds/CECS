@@ -18,12 +18,13 @@ static uintptr_t elf_load(const char *filename) {
     assert(elf_h.e_machine == EM_RISCV);
     //2
     Elf_Phdr elf_ph;
-    size_t ph_offset=elf_h.e_phoff;
     for(int j=0;j<elf_h.e_phnum;j++){
-        ramdisk_read((void*)&elf_ph, ph_offset+j*elf_h.e_phentsize, sizeof(Elf_Phdr));
+        ramdisk_read((void*)&elf_ph, elf_h.e_phoff+j*elf_h.e_phentsize, sizeof(Elf_Phdr));
         if(elf_ph.p_type == PT_LOAD){
-            ramdisk_read((void*)elf_ph.p_vaddr, disk_offset+elf_ph.p_offset, elf_ph.p_filesz);
-            Log("elf_ph.p_vaddr:%x p_offset:%x",elf_ph.p_vaddr,elf_ph.p_offset);
+            ramdisk_read((void*)elf_ph.p_vaddr, disk_offset+elf_ph.p_offset, elf_ph.p_memsz);
+            Log("elf_ph.p_vaddr:%x p_offset:%x\n",elf_ph.p_vaddr,elf_ph.p_offset);
+            Log("elf_ph.p_memsz:%x\n",elf_ph.p_memsz);
+            Log("elf_ph.p_filesz:%x\n",elf_ph.p_filesz);
             memset((void*)(elf_ph.p_vaddr+elf_ph.p_filesz), 0, elf_ph.p_memsz-elf_ph.p_filesz);
         }
         // ph_offset+=elf_h.e_phentsize;

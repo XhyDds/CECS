@@ -11,13 +11,17 @@ Context* __irq_handle(Context *c) {
   switch (c->mcause) {
     // Lab7 TODO: implement EVENT_SYSCALL and EVENT_YIELD
 
-    // case ECALL_FROM_M: {
-    //   switch(c->gpr[17]){
-    //   } break;
-    // }
+    case ECALL_FROM_M: {
+      switch(c->gpr[17]){
+        case SYSCALL_YIELD: ev.event = EVENT_YIELD; break;
+        default: ev.event = EVENT_SYSCALL; break;
+      } break;
+    }
 
     default: ev.event = EVENT_ERROR; break;
   }
+  printf("a7:%d\n",c->gpr[17]);
+  printf("event:%d\n",ev.event);
   c = __event_handle(ev, c);
   assert(c != NULL);
   return c;    

@@ -90,6 +90,7 @@
         "typeinfo": "cpp",
         "valarray": "cpp",
         "variant": "cpp",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "fs.h": "c"
     }
 }
