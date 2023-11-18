@@ -4,8 +4,7 @@
 
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 
-void __gpu_init() {;
-
+void __gpu_init() {
 }
 
 void __gpu_config(DEV_GPU_CONFIG_T *cfg) {
@@ -31,12 +30,22 @@ void __gpu_fbdraw(DEV_GPU_FBDRAW_T *ctl) {
   uint32_t H = size & 0x0ffff;
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
   
-  for(int i = 0; i < h; i++){
-    for(int j = 0; j < w; j++){
-      if(y + i >= H || x + j >= W) continue;
-      fb[(y + i) * W + x + j] = pixels[i * w + j];
-    }
-  }
+    outl(FFB_ADDR,x);
+    outl(FFB_ADDR+4,y);
+    outl(FFB_ADDR+8,w);
+    outl(FFB_ADDR+12,h);
+    outl(FFB_ADDR+16,W);
+    outl(FFB_ADDR+20,H);
+    outl(FFB_ADDR+24,(uintptr_t)pixels);
+
+    asm volatile("fence.i");
+    outl(FFB_ADDR+28,1);
+//   for(int i = 0; i < h; i++){
+//     for(int j = 0; j < w; j++){
+//       if(y + i >= H || x + j >= W) continue;
+//       fb[(y + i) * W + x + j] = pixels[i * w + j];
+//     }
+//   }
   if(sync){
     outl(SYNC_ADDR, 1);
     return;
