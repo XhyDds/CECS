@@ -915,7 +915,7 @@ VL_ATTR_COLD void VCPU___024root__trace_full_sub_0(VCPU___024root* vlSelf, Veril
     VlWide<4>/*127:0*/ __Vtemp_h495dcf24__0;
     VlWide<4>/*127:0*/ __Vtemp_hd40e0d09__1;
     VlWide<4>/*127:0*/ __Vtemp_h4fc542b6__1;
-    VlWide<4>/*127:0*/ __Vtemp_h76a65b18__0;
+    VlWide<4>/*127:0*/ __Vtemp_hf2137323__0;
     VlWide<4>/*127:0*/ __Vtemp_h47c5a587__0;
     VlWide<4>/*127:0*/ __Vtemp_h5ce51087__0;
     VlWide<4>/*127:0*/ __Vtemp_h14324bb5__1;
@@ -955,27 +955,18 @@ VL_ATTR_COLD void VCPU___024root__trace_full_sub_0(VCPU___024root* vlSelf, Veril
                                                 (((IData)(vlSelf->CPU__DOT__d_rready) 
                                                   & (IData)(vlSelf->CPU__DOT__d_rlast))
                                                   ? 
-                                                 ((0xaU 
-                                                   == 
-                                                   (vlSelf->CPU__DOT__DCache_inst__DOT__addr_pipe 
-                                                    >> 0x1cU))
+                                                 ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__uncache)
                                                    ? 3U
                                                    : 2U)
                                                   : 1U))
                                              : (((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__rvalid_pipe) 
                                                  | (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wvalid_pipe))
                                                  ? 
-                                                ((0xaU 
-                                                  == 
-                                                  (vlSelf->CPU__DOT__DCache_inst__DOT__addr_pipe 
-                                                   >> 0x1cU))
+                                                ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__uncache)
                                                   ? 
                                                  ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wvalid_pipe)
                                                    ? 3U
-                                                   : 
-                                                  ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__rvalid_pipe)
-                                                    ? 1U
-                                                    : 0U))
+                                                   : 1U)
                                                   : 
                                                  ((0U 
                                                    != (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__hit))
@@ -987,27 +978,18 @@ VL_ATTR_COLD void VCPU___024root__trace_full_sub_0(VCPU___024root* vlSelf, Veril
                                                   : 0U))))),2);
     bufp->fullCData(oldp+18,(((0U == (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_state))
                                ? ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_en)
-                                   ? (((0xaU == (vlSelf->CPU__DOT__DCache_inst__DOT__addr_pipe 
-                                                 >> 0x1cU)) 
-                                       & (0U == (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wstrb_pipe)))
-                                       ? 2U : ((0xaU 
-                                                == 
-                                                (vlSelf->CPU__DOT__DCache_inst__DOT__addr_pipe 
-                                                 >> 0x1cU))
-                                                ? 1U
-                                                : (
-                                                   (1U 
-                                                    & (vlSelf->CPU__DOT__DCache_inst__DOT__dirty_table
-                                                       [
-                                                       (1U 
-                                                        & ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__fence_valid_pipe)
-                                                            ? 
-                                                           ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__addr_cnt) 
-                                                            >> 4U)
-                                                            : (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__lru_sel)))] 
-                                                       >> (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__w_index)))
-                                                    ? 1U
-                                                    : 2U)))
+                                   ? ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__uncache)
+                                       ? ((0U != (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wstrb_pipe))
+                                           ? 1U : 2U)
+                                       : ((1U & (vlSelf->CPU__DOT__DCache_inst__DOT__dirty_table
+                                                 [(1U 
+                                                   & ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__fence_valid_pipe)
+                                                       ? 
+                                                      ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__addr_cnt) 
+                                                       >> 4U)
+                                                       : (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__lru_sel)))] 
+                                                 >> (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__w_index)))
+                                           ? 1U : 2U))
                                    : 0U) : ((1U == (IData)(vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_state))
                                              ? ((IData)(vlSelf->CPU__DOT__d_bvalid)
                                                  ? 2U
@@ -1191,8 +1173,7 @@ VL_ATTR_COLD void VCPU___024root__trace_full_sub_0(VCPU___024root* vlSelf, Veril
                             << 3U)));
     bufp->fullIData(oldp+60,(((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__data_from_mem)
                                ? __Vtemp_h9b694aeb__0[0U]
-                               : ((0xaU == (vlSelf->CPU__DOT__DCache_inst__DOT__addr_pipe 
-                                            >> 0x1cU))
+                               : ((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__uncache)
                                    ? __Vtemp_hd40e0d09__0[0U]
                                    : __Vtemp_h4fc542b6__0[0U]))),32);
     bufp->fullIData(oldp+61,((0xfffffff0U & vlSelf->CPU__DOT__ICache_inst__DOT__addr_pipe)),32);
@@ -1362,8 +1343,7 @@ VL_ATTR_COLD void VCPU___024root__trace_full_sub_0(VCPU___024root* vlSelf, Veril
     bufp->fullBit(oldp+205,(vlSelf->CPU__DOT__DCache_inst__DOT__write_counter_reset));
     bufp->fullCData(oldp+206,(vlSelf->CPU__DOT__DCache_inst__DOT__addr_cnt),5);
     bufp->fullBit(oldp+207,(vlSelf->CPU__DOT__DCache_inst__DOT__addr_cnt_add));
-    bufp->fullBit(oldp+208,((0xaU == (vlSelf->CPU__DOT__DCache_inst__DOT__addr_pipe 
-                                      >> 0x1cU))));
+    bufp->fullBit(oldp+208,(vlSelf->CPU__DOT__DCache_inst__DOT__uncache));
     bufp->fullBit(oldp+209,(vlSelf->CPU__DOT__DCache_inst__DOT__read_from_cnt));
     __Vtemp_hab5a02e1__1[0U] = vlSelf->CPU__DOT__DCache_inst__DOT__mem_rdata
         [(1U & (~ (IData)(vlSelf->CPU__DOT__DCache_inst__DOT____VdfgTmp_ha6d4d8ec__0)))][0U];
@@ -1381,23 +1361,21 @@ VL_ATTR_COLD void VCPU___024root__trace_full_sub_0(VCPU___024root* vlSelf, Veril
     VL_SHIFTR_WWI(128,128,7, __Vtemp_h4fc542b6__1, vlSelf->CPU__DOT__DCache_inst__DOT__ret_buf, 
                   (0x60U & (vlSelf->CPU__DOT__DCache_inst__DOT__addr_pipe 
                             << 3U)));
-    if ((0xaU == (vlSelf->CPU__DOT__DCache_inst__DOT__addr_pipe 
-                  >> 0x1cU))) {
-        __Vtemp_h76a65b18__0[0U] = __Vtemp_hd40e0d09__1[0U];
-        __Vtemp_h76a65b18__0[1U] = __Vtemp_hd40e0d09__1[1U];
-        __Vtemp_h76a65b18__0[2U] = __Vtemp_hd40e0d09__1[2U];
-        __Vtemp_h76a65b18__0[3U] = __Vtemp_hd40e0d09__1[3U];
+    if (vlSelf->CPU__DOT__DCache_inst__DOT__uncache) {
+        __Vtemp_hf2137323__0[0U] = __Vtemp_hd40e0d09__1[0U];
+        __Vtemp_hf2137323__0[1U] = __Vtemp_hd40e0d09__1[1U];
+        __Vtemp_hf2137323__0[2U] = __Vtemp_hd40e0d09__1[2U];
+        __Vtemp_hf2137323__0[3U] = __Vtemp_hd40e0d09__1[3U];
     } else {
-        __Vtemp_h76a65b18__0[0U] = __Vtemp_h4fc542b6__1[0U];
-        __Vtemp_h76a65b18__0[1U] = __Vtemp_h4fc542b6__1[1U];
-        __Vtemp_h76a65b18__0[2U] = __Vtemp_h4fc542b6__1[2U];
-        __Vtemp_h76a65b18__0[3U] = __Vtemp_h4fc542b6__1[3U];
+        __Vtemp_hf2137323__0[0U] = __Vtemp_h4fc542b6__1[0U];
+        __Vtemp_hf2137323__0[1U] = __Vtemp_h4fc542b6__1[1U];
+        __Vtemp_hf2137323__0[2U] = __Vtemp_h4fc542b6__1[2U];
+        __Vtemp_hf2137323__0[3U] = __Vtemp_h4fc542b6__1[3U];
     }
-    bufp->fullWData(oldp+214,(__Vtemp_h76a65b18__0),128);
+    bufp->fullWData(oldp+214,(__Vtemp_hf2137323__0),128);
     bufp->fullCData(oldp+218,(vlSelf->CPU__DOT__DCache_inst__DOT__state),2);
     bufp->fullCData(oldp+219,(vlSelf->CPU__DOT__DCache_inst__DOT__wfsm_state),2);
-    bufp->fullCData(oldp+220,(((0xaU == (vlSelf->CPU__DOT__DCache_inst__DOT__addr_pipe 
-                                         >> 0x1cU))
+    bufp->fullCData(oldp+220,(((IData)(vlSelf->CPU__DOT__DCache_inst__DOT__uncache)
                                 ? 0U : 3U)),3);
     bufp->fullSData(oldp+221,(vlSelf->CPU__DOT__DCache_inst__DOT__mem_we
                               [0U]),16);

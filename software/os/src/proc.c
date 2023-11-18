@@ -15,10 +15,12 @@ Context* schedule(Context *prev) {
 
 
 void init_proc() {
-  Log("Initializing processes...");
-  //load program here
-  user_naive_load("/bin/dummy");
-  user_naive_load("/bin/menu");
+    Log("Initializing processes...");
+    //load program here
+    // user_naive_load("/bin/dummy");
+    // user_naive_load("/bin/file-test");
+    user_naive_load("/bin/menu");
+
 }
 
 

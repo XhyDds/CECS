@@ -20,8 +20,8 @@ Context* __irq_handle(Context *c) {
 
     default: ev.event = EVENT_ERROR; break;
   }
-  printf("a7:%d\n",c->gpr[17]);
-  printf("event:%d\n",ev.event);
+//   Log("a7:%d",c->gpr[17]);
+//   Log("event:%d",ev.event);
   c = __event_handle(ev, c);
   assert(c != NULL);
   return c;    

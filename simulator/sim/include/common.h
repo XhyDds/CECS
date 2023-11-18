@@ -96,4 +96,7 @@ void mmio_write(paddr_t addr, int len, word_t data);
 // timer
 uint64_t get_time();
 struct tm *get_time_tm();
+
+// paddr
+void print_itrace(int n);
 #endif

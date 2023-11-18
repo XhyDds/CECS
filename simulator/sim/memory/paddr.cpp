@@ -58,6 +58,12 @@ void pmem_read(){
     if(dut->arvalid){
       // Lab5 TODO: implement the read request
         araddr = dut->araddr;
+        if(araddr<0x80000000){
+            printf("araddr = %x\n", araddr);
+            dut->eval();
+            isa_reg_display();
+            print_itrace(-1);
+        }
         assert(araddr >= 0x80000000);
         arlen = dut->arlen;
         arsize = 1 << dut->arsize;

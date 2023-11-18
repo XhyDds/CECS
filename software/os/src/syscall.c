@@ -11,6 +11,7 @@ void syscall_handle(Context *c) {
   a[1] = c->SYS_ARG1;
   a[2] = c->SYS_ARG2;
   a[3] = c->SYS_ARG3;
+    // Log("SYS_CALL:%d",a[0]);
   switch (a[0]) {
     case SYS_exit: {
       // Lab7 TODO: exit the current process
@@ -24,18 +25,33 @@ void syscall_handle(Context *c) {
     }
     case SYS_write: {
       // Lab7 TODO: use `fs_write` to write the file with fd from offset by buf
+      c->SYS_RET=fs_write(a[1], (void *)a[2], a[3]);
+    //   Log("SYS_write finish");
+      break;
     }
     case SYS_open: {
       // Lab7 TODO: open the file with name = (char *)a[1]
+      c->SYS_RET=fs_open((char *)a[1], a[2], a[3]);
+    //   Log("SYS_open finish");
+      break;
     }
     case SYS_read: {
       // Lab7 TODO: read the file with fd from offset into buf
+      c->SYS_RET=fs_read(a[1], (void *)a[2], a[3]);
+    //   Log("SYS_read finish");
+      break;
     }
     case SYS_lseek: {
       // Lab7 TODO: seek the file with fd from the offset based on whence
+      c->SYS_RET=fs_lseek(a[1], a[2], a[3]);
+    //   Log("SYS_lseek finish");
+      break;
     }
     case SYS_close: {
       // Lab7 TODO: close the file with fd
+      c->SYS_RET=fs_close(a[1]);
+    //   Log("SYS_close finish");
+      break;
     }
     case SYS_gettimeofday: {
       size_t time = io_read(DEV_TIMER_UPTIME).us;
