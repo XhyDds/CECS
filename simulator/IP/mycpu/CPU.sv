@@ -79,7 +79,11 @@ module CPU#(
     logic [ 4:0]    alu_op_id, alu_op_ex;
     logic [ 4:0]    mem_access_id, mem_access_ex, mem_access_ls;
     logic [ 4:0]    br_type_id, br_type_ex;
-    logic [ 4:0]    priv_vec_id, priv_vec_ex, priv_vec_ls, priv_vec_wb;
+    logic [ 0:0]    priv_vec_if2, priv_vec_id_;
+    logic [ 6:0]    priv_vec_id;
+    logic [ 6:0]    priv_vec_ex,priv_vec_ls_;
+    logic [ 8:0]    priv_vec_ls, priv_vec_wb;
+    logic [ 0:0]    is_user_mode;
     logic [ 3:0]    wstrb_ex, d_wstrb;
     logic [ 2:0]    i_rsize, d_rsize, d_wsize;
     logic [ 1:0]    alu_rs1_sel_id, alu_rs1_sel_ex;
@@ -161,7 +165,8 @@ module CPU#(
         .i_rlast            (i_rlast),
         .i_rsize            (i_rsize),
         .i_rlen             (i_rlen),
-        .icache_miss        (icache_miss)
+        .icache_miss        (icache_miss),
+        .allign             (priv_vec_if2)
     );
 
     /* IF2 stage */
@@ -178,7 +183,9 @@ module CPU#(
         .pc_id          (pc_id),
         .inst_id        (inst_id),
         .commit_if2     (commit_if2),
-        .commit_id      (commit_id)
+        .commit_id      (commit_id),
+        .priv_vec_if2   (priv_vec_if2),
+        .priv_vec_id    (priv_vec_id_)
     );
 
     /* ID stage */
@@ -213,7 +220,7 @@ module CPU#(
         .rstn           (rstn),
         .raddr          (inst_id[31:20]),
         .waddr          (inst_wb[31:20]),
-        .we             (priv_vec_wb[`CSR_RW]), 
+        .we_            (priv_vec_wb[`CSR_RW]), 
         .wdata          (csr_wdata_wb),
         .rdata          (csr_rdata_id),
 
@@ -221,7 +228,8 @@ module CPU#(
         .pc_wb          (pc_wb),
         .mtvec_out      (mtvec_global),
         .mcause_in      (mcause_global),
-        .priv_vec_wb    (priv_vec_wb)
+        .priv_vec_wb    (priv_vec_wb),
+        .is_user_mode   (is_user_mode)
     );
 
     /* ID-EX segreg */
@@ -246,6 +254,7 @@ module CPU#(
         .alu_rs2_sel_id (alu_rs2_sel_id),
         .rf_we_id       (rf_we_id),
         .priv_vec_id    (priv_vec_id),
+        .priv_vec_id_   (priv_vec_id_),
         .pc_ex          (pc_ex),
         .inst_ex        (inst_ex),
         .csr_rdata_ex   (csr_rdata_ex),
@@ -352,7 +361,7 @@ module CPU#(
         .rf_we_ex       (rf_we_ex),
         .pc_ls          (pc_ls),
         .inst_ls        (inst_ls),
-        .priv_vec_ls    (priv_vec_ls),
+        .priv_vec_ls    (priv_vec_ls_),
         .csr_wdata_ls   (csr_wdata_ls),
         .alu_result_ls  (alu_result_ls),
         .mem_access_ls  (mem_access_ls),
@@ -394,7 +403,8 @@ module CPU#(
         .d_wlen         (d_wlen),
         .d_bvalid       (d_bvalid),
         .d_bready       (d_bready),
-        .dcache_miss    (dcache_miss)
+        .dcache_miss    (dcache_miss),
+        .priv_vec_ls    (priv_vec_ls)
     );
     /* LS stage */
     DCache_Read_Ctrl  DCache_Read_Ctrl_inst (
@@ -415,6 +425,7 @@ module CPU#(
         .inst_ls            (inst_ls),
         .alu_result_ls      (alu_result_ls),
         .mem_rdata_ls       (mem_rdata_ls),
+        .priv_vec_ls_       (priv_vec_ls_),
         .priv_vec_ls        (priv_vec_ls),
         .csr_wdata_ls       (csr_wdata_ls),
         .wb_rf_sel_ls       (wb_rf_sel_ls),
@@ -445,6 +456,7 @@ module CPU#(
 
     Exp_Commit  Exp_Commit_inst (
         .priv_vec(priv_vec_wb),
+        .is_user_mode(is_user_mode),
         .exp_code(mcause_global)
     );
 

@@ -10,12 +10,14 @@ module Decode(
     output logic [ 1:0] alu_rs2_sel,
     output logic [ 0:0] wb_rf_sel,
     output logic [ 4:0] br_type,
-    output logic [ 4:0] priv_vec
+    output logic [ 6:0] priv_vec
 );
     // normal decode 
+    reg is_not_common_ir;
     wire [4:0] rd = inst[11:7];
     wire [2:0] funct3 = inst[14:12];
     always_comb begin
+        is_not_common_ir=0;
         case(inst[6:0])
         'h37: begin
             // lui, U_TYPE
@@ -128,6 +130,7 @@ module Decode(
             br_type     = {1'b0, inst[2], funct3};
         end
         default: begin
+            is_not_common_ir=1;
             imm         = 0;
             mem_access  = 0;
             alu_op      = 0;
@@ -146,5 +149,21 @@ module Decode(
     assign priv_vec[`MRET]   = inst[6:0] == 7'h73 && funct3 == 3'h0 && inst[31:20] == 12'h302;
     assign priv_vec[`FENCEI] = inst[6:0] == 7'hf  && funct3 == 3'h1;
     assign priv_vec[`FENCE]  = inst[6:0] == 7'hf  && funct3 == 3'h0;
+
+    reg is_not_other_priv;
+    always @(*) begin
+        if(inst[6:0] == 7'h73)begin
+            if(funct3 != 3'h0) is_not_other_priv=0;
+            else begin
+                if(inst[31:20] == 12'h0) is_not_other_priv=0;
+                else if(inst[31:20] == 12'h302) is_not_other_priv=0;
+                else is_not_other_priv=1;
+            end
+        end
+        else if(inst[6:0] == 7'hf && (|funct3[2:1])) is_not_other_priv=0;
+        else is_not_other_priv=1;
+    end
+
+    assign priv_vec[`INST_ALLIGN] = is_not_common_ir && is_not_other_priv;
 
 endmodule

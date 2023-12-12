@@ -1,5 +1,6 @@
 
 `timescale 1ns / 1ps
+`include "./include/config.sv"
 //////////////////////////////////////////////////////////////////////////////////
 //
 // Author: Ma Zirui
@@ -31,7 +32,8 @@ module ICache #(
     input  logic [31:0] i_rdata,        // read data from main memory
     input  logic [ 0:0] i_rlast,        // indicate the last beat of read data from main memory
     output logic [ 2:0] i_rsize,        // indicate the size of read data once, if i_rsize = n then read 2^n bytes once
-    output logic [ 7:0] i_rlen          // indicate the number of read data, if i_rlen = n then read n+1 times
+    output logic [ 7:0] i_rlen,         // indicate the number of read data, if i_rlen = n then read n+1 times
+    output logic [ 0:0] allign        // privilege vector from pipeline
 );
     localparam 
         BYTE_OFFSET_WIDTH   = WORD_OFFSET_WIDTH + 2,                // total offset bits
@@ -201,7 +203,7 @@ module ICache #(
     logic [BIT_NUM-1:0] rdata_mem, rdata_ret;
     assign rdata_mem    = mem_rdata[hit_way] >> {addr_pipe[BYTE_OFFSET_WIDTH-1:2], 5'b0};
     assign rdata_ret    = ret_buf >> {addr_pipe[BYTE_OFFSET_WIDTH-1:2], 5'b0};
-    assign rdata        = flush || flush_buf ? 'h13 : (data_from_mem ? rdata_mem[31:0] : rdata_ret[31:0]);
+    assign rdata        = (flush || flush_buf || (addr_pipe[1:0]!=0)) ? 'h13 : (data_from_mem ? rdata_mem[31:0] : rdata_ret[31:0]);
 
 /* -------------- 9 LRU replace: choose the way to replace -------------- */
     reg [SET_NUM-1:0] lru;
@@ -239,7 +241,10 @@ module ICache #(
     always_comb begin
         case(state)
             IDLE: begin
-                if(rvalid_pipe)         next_state = cache_hit ? IDLE : MISS;
+                if(rvalid_pipe)
+                    if(addr_pipe[1:0]==0)         
+                                        next_state = cache_hit ? IDLE : MISS;
+                    else                next_state = IDLE;
                 else                    next_state = IDLE;
             end
             MISS: begin
@@ -263,7 +268,11 @@ module ICache #(
         case(state)
         IDLE: begin
             if(rvalid_pipe) begin
-                if(!cache_hit) begin
+                if(addr_pipe[1:0]!=0) begin
+                    req_buf_we      = 1;
+                    allign          = 1;
+                end
+                else if(!cache_hit) begin
                     icache_miss     = 1;
                 end
                 else if(!stall) begin

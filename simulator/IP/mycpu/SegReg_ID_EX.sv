@@ -20,7 +20,8 @@ module SegReg_ID_EX#(
     input  logic [ 1:0] alu_rs1_sel_id,
     input  logic [ 1:0] alu_rs2_sel_id,
     input  logic [ 0:0] rf_we_id,
-    input  logic [ 4:0] priv_vec_id,
+    input  logic [ 6:0] priv_vec_id,
+    input  logic [ 0:0] priv_vec_id_,
 
     output logic [31:0] pc_ex,
     output logic [31:0] inst_ex,
@@ -35,7 +36,7 @@ module SegReg_ID_EX#(
     output logic [ 1:0] alu_rs1_sel_ex,
     output logic [ 1:0] alu_rs2_sel_ex,
     output logic [ 0:0] rf_we_ex,
-    output logic [ 4:0] priv_vec_ex,
+    output logic [ 6:0] priv_vec_ex,
 
     input  logic [ 0:0] commit_id,
     output logic [ 0:0] commit_ex
@@ -55,7 +56,7 @@ module SegReg_ID_EX#(
             alu_rs1_sel_ex  <=  2'h0;
             alu_rs2_sel_ex  <=  2'h0;
             rf_we_ex        <=  1'h0;
-            priv_vec_ex     <=  5'h0;
+            priv_vec_ex     <=  7'h0;
             commit_ex       <=  1'h0;
         end 
         else if(!stall) begin
@@ -72,7 +73,7 @@ module SegReg_ID_EX#(
             alu_rs1_sel_ex  <= alu_rs1_sel_id;
             alu_rs2_sel_ex  <= alu_rs2_sel_id;
             rf_we_ex        <= rf_we_id;
-            priv_vec_ex     <= priv_vec_id;
+            priv_vec_ex     <= {priv_vec_id[6],priv_vec_id_,priv_vec_id[4:0]};
             commit_ex       <= commit_id;
         end
     end

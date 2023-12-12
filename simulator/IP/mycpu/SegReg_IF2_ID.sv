@@ -12,18 +12,22 @@ module SegReg_IF2_ID#(
     output logic [31:0] pc_id,
     output logic [31:0] inst_id,
     input  logic [ 0:0] commit_if2,
-    output logic [ 0:0] commit_id
+    output logic [ 0:0] commit_id,
+    input  logic [ 0:0] priv_vec_if2,
+    output logic [ 0:0] priv_vec_id
 );
     always_ff @(posedge clk) begin
         if(!rstn || flush) begin
             pc_id       <= PC_RESET_VAL;
             inst_id     <= 32'h13;
             commit_id   <= 1'b0;
+            priv_vec_id <= 1'b0;
         end 
         else if(!stall) begin
             pc_id       <= pc_if2;
             inst_id     <= inst_if2;
             commit_id   <= commit_if2;
+            priv_vec_id <= priv_vec_if2;
         end
     end
 

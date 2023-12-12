@@ -5,7 +5,7 @@ module CSR(
     input  logic [ 0:0] rstn,
     input  logic [11:0] raddr,
     input  logic [11:0] waddr,
-    input  logic [ 0:0] we,
+    input  logic [ 0:0] we_,
     input  logic [31:0] wdata,
     output logic [31:0] rdata,
 
@@ -16,12 +16,17 @@ module CSR(
 
     input  logic [31:0] mcause_in,
 
-    input  logic [ 4:0] priv_vec_wb
+    input  logic [ 8:0] priv_vec_wb,
+
+    output logic [ 0:0] is_user_mode
 );
 
 `ifdef DIFF
     import "DPI-C" function void set_csr_ptr(input logic [31:0] m1 [], input logic [31:0] m2 [], input  logic [31:0] m3 [], input  logic [31:0] m4 []);
 `endif
+    wire we=(mstatus[2:1]!=2'b00)&&we_;
+    assign is_user_mode = mstatus[2:1]==2'b00;
+
     wire has_exp = |mcause_in;
     reg [31:0] mstatus;
     always_ff @(posedge clk) begin

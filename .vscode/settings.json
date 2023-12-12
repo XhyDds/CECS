@@ -91,6 +91,10 @@
         "valarray": "cpp",
         "variant": "cpp",
         "stdbool.h": "c",
-        "fs.h": "c"
+        "fs.h": "c",
+        "stdio.h": "c",
+        "unistd.h": "c",
+        "libc-header-start.h": "c",
+        "stubs-64.h": "c"
     }
 }

@@ -1,5 +1,6 @@
 
 `timescale 1ns / 1ps
+`include "./include/config.sv"
 //////////////////////////////////////////////////////////////////////////////////
 //
 // Author: Ma Zirui
@@ -51,7 +52,9 @@ module DCache #(
 
     // back
     input  logic [ 0:0]     d_bvalid,           // valid signal of write back request from main memory
-    output logic [ 0:0]     d_bready            // ready signal of write back request to main memory
+    output logic [ 0:0]     d_bready,           // ready signal of write back request to main memory
+
+    output logic [ 8:0]     priv_vec_ls
 );
     localparam 
         BYTE_OFFSET_WIDTH   = WORD_OFFSET_WIDTH + 2,                // total offset bits
@@ -139,6 +142,49 @@ module DCache #(
 
     // uncache
     logic                       uncache;
+/* -------------- 0' address allign   -------------- */
+    always_comb begin
+        priv_vec_ls=0;
+        if(rvalid_pipe) begin
+            //读
+            if(d_rsize==0) begin
+                //byte
+            end
+            else if(d_rsize==3'b1)begin
+                //half word
+                if(addr_pipe[0]==1'b1) begin
+                    priv_vec_ls[`LD_ALLIGN]=1'b1;
+                end
+            end
+            else if (d_rsize==3'h2) begin
+                //word
+                if(addr_pipe[1:0]!=2'b00) begin
+                    priv_vec_ls[`LD_ALLIGN]=1'b1;
+                end
+            end
+            else ;    
+        end
+        else if(wvalid_pipe) begin
+            //写
+            if(d_wsize==0) begin
+                //byte
+            end
+            else if(d_wsize==3'h1)begin
+                //half word
+                if(addr_pipe[0]==1'b1) begin
+                    priv_vec_ls[`ST_ALLIGN]=1'b1;
+                end
+            end
+            else if (d_wsize==3'h2) begin
+                //word
+                if(addr_pipe[1:0]!=2'b00) begin
+                    priv_vec_ls[`ST_ALLIGN]=1'b1;
+                end
+            end
+            else ;
+        end
+    end
+    wire allign_error=priv_vec_ls[`LD_ALLIGN]|priv_vec_ls[`ST_ALLIGN];
 
 /* -------------- 1 request buffer : lock the read request addr -------------- */
     always_ff @(posedge clk) begin
@@ -286,7 +332,7 @@ module DCache #(
     wire [BIT_NUM-1:0] rdata_mem, rdata_ret;
     assign rdata_mem    = mem_rdata[hit_way] >> {addr_pipe[BYTE_OFFSET_WIDTH-1:2], 5'b0};
     assign rdata_ret    = uncache ? ret_buf >> (BIT_NUM-32) : ret_buf >> {addr_pipe[BYTE_OFFSET_WIDTH-1:2], 5'b0};
-    assign rdata        = data_from_mem ? rdata_mem[31:0] : rdata_ret[31:0];
+    assign rdata        = allign_error?32'h0:(data_from_mem ? rdata_mem[31:0] : rdata_ret[31:0]);
 
 /* -------------- 9 LRU replace: choose the way to replace -------------- */
     always_ff @(posedge clk) begin
@@ -396,7 +442,10 @@ module DCache #(
         case(state)
         IDLE: begin
             if(rvalid_pipe || wvalid_pipe) begin
-                if(uncache) begin
+                if(allign_error) begin
+                    next_state = IDLE;
+                end
+                else if(uncache) begin
                     next_state = wvalid_pipe ? WAIT_WRITE : MISS;
                 end
                 else if(cache_hit) begin
@@ -470,7 +519,10 @@ module DCache #(
         case(state)
         IDLE: begin
             if(rvalid_pipe || wvalid_pipe) begin
-                if(uncache) begin
+                if(allign_error) begin
+                    req_buf_we              = 1;
+                end
+                else if(uncache) begin
                     wfsm_en         = 1;
                     mbuf_we         = 1;
                     wbuf_we         = 1;

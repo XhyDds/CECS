@@ -69,5 +69,9 @@
 `define MRET            2
 `define FENCEI          3
 `define FENCE           4
+`define INST_ALLIGN     5
+`define INST_INVALID    6
+`define LD_ALLIGN       7
+`define ST_ALLIGN       8
 
 

@@ -29,9 +29,9 @@ module Hazard(
     // control hazard
     input  logic [ 0:0] jump,
     input  logic [31:0] jump_target,
-    input  logic [ 4:0] priv_vec_ex,
+    input  logic [ 6:0] priv_vec_ex,
     input  logic [31:0] pc_ex,
-    input  logic [ 4:0] priv_vec_wb,
+    input  logic [ 8:0] priv_vec_wb,
     input  logic [31:0] pc_wb,
     input  logic [31:0] mepc_global,
     input  logic [31:0] mtvec_global,
