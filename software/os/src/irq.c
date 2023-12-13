@@ -1,6 +1,11 @@
 #include <debug.h>
 #include <proc.h>
 #define ECALL_FROM_M 0xb
+#define INST_ALLIGN 0x0
+#define INST_INVALID 0x2
+#define LD_ALLIGN 0x3
+#define ST_ALLIGN 0x4
+#define U_CSR_RW 0x5
 #define SYSCALL_YIELD 0xffffffff
 
 void syscall_handle(Context *c);
@@ -9,8 +14,28 @@ static Context* __event_handle(Event e, Context* c);
 Context* __irq_handle(Context *c) {
   Event ev = {0};
   switch (c->mcause) {
-    // Lab7 TODO: implement EVENT_SYSCALL and EVENT_YIELD
+    case INST_ALLIGN: {
+        printf("Instruction address misaligned\n");
+        ev.event = EVENT_ERROR; break;
+    }
+    case INST_INVALID: {
+        printf("Instruction fault\n");
+        ev.event = EVENT_ERROR; break;
+    }
+    case LD_ALLIGN: {
+        printf("Load address misaligned\n");
+        ev.event = EVENT_ERROR; break;
+    }
+    case ST_ALLIGN: {
+        printf("Store address misaligned\n");
+        ev.event = EVENT_ERROR; break;
+    }
+    case U_CSR_RW: {
+        printf("U-mode csr read/write\n");
+        ev.event = EVENT_ERROR; break;
+    }
 
+    // Lab7 TODO: implement EVENT_SYSCALL and EVENT_YIELD
     case ECALL_FROM_M: {
       switch(c->gpr[17]){
         case SYSCALL_YIELD: ev.event = EVENT_YIELD; break;
@@ -36,6 +61,10 @@ static Context* __event_handle(Event e, Context* c) {
     case EVENT_SYSCALL:
       syscall_handle(c);
       c->mepc += 4;
+      break;
+    case EVENT_ERROR:
+      printf("Error: %d\n", c->mcause);
+      halt(1);
       break;
     default: panic("Unhandled event ID = %d", e.event);
   }

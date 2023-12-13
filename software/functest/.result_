@@ -1,0 +1,70 @@
+[1;32madd	 ACCEPT[1;32m
+
+[1;32madd-longlong	 ACCEPT[1;32m
+
+[1;31mbit	 FAILED[1;31m
+
+[1;32mbubble-sort	 ACCEPT[1;32m
+
+[1;31mcrc32	 FAILED[1;31m
+
+[1;32mdiv	 ACCEPT[1;32m
+
+[1;32mdummy	 ACCEPT[1;32m
+
+[1;32mfact	 ACCEPT[1;32m
+
+[1;32mfib	 ACCEPT[1;32m
+
+[1;32mgoldbach	 ACCEPT[1;32m
+
+[1;31mhello-str	 FAILED[1;31m
+
+[1;32mif-else	 ACCEPT[1;32m
+
+[1;32mleap-year	 ACCEPT[1;32m
+
+[1;31mload-store	 FAILED[1;31m
+
+[1;32mmatrix-mul	 ACCEPT[1;32m
+
+[1;32mmax	 ACCEPT[1;32m
+
+[1;32mmersenne	 ACCEPT[1;32m
+
+[1;32mmin3	 ACCEPT[1;32m
+
+[1;32mmov-c	 ACCEPT[1;32m
+
+[1;31mmovsx	 FAILED[1;31m
+
+[1;32mmul-longlong	 ACCEPT[1;32m
+
+[1;32mpascal	 ACCEPT[1;32m
+
+[1;32mprime	 ACCEPT[1;32m
+
+[1;32mquick-sort	 ACCEPT[1;32m
+
+[1;32mrecursion	 ACCEPT[1;32m
+
+[1;32mselect-sort	 ACCEPT[1;32m
+
+[1;32mshift	 ACCEPT[1;32m
+
+[1;32mshuixianhua	 ACCEPT[1;32m
+
+[1;31mstring	 FAILED[1;31m
+
+[1;32msub-longlong	 ACCEPT[1;32m
+
+[1;32msum	 ACCEPT[1;32m
+
+[1;32mswitch	 ACCEPT[1;32m
+
+[1;31mto-lower-case	 FAILED[1;31m
+
+[1;31munalign	 FAILED[1;31m
+
+[1;32mwanshu	 ACCEPT[1;32m
+

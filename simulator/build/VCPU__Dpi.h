@@ -16,7 +16,7 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at /home/xhyvm2/gitwork/labs/COMPSYS/simulator/IP/mycpu/CSR.sv:23:34
+    // DPI import at /home/xhyvm2/gitwork/labs/COMPSYS/simulator/IP/mycpu/CSR.sv:25:34
     extern void set_csr_ptr(const svOpenArrayHandle m1, const svOpenArrayHandle m2, const svOpenArrayHandle m3, const svOpenArrayHandle m4);
     // DPI import at /home/xhyvm2/gitwork/labs/COMPSYS/simulator/IP/mycpu/Regfile.sv:18:34
     extern void set_gpr_ptr(const svOpenArrayHandle a);

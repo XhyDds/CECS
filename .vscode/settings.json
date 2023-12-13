@@ -95,6 +95,7 @@
         "stdio.h": "c",
         "unistd.h": "c",
         "libc-header-start.h": "c",
-        "stubs-64.h": "c"
+        "stubs-64.h": "c",
+        "trap.h": "c"
     }
 }
