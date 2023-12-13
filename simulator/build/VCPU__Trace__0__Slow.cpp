@@ -510,6 +510,7 @@ VL_ATTR_COLD void VCPU___024root__trace_init_sub__TOP__0(VCPU___024root* vlSelf,
     tracep->declBus(c+63,"mepc_global", false,-1, 31,0);
     tracep->declBus(c+64,"mtvec_global", false,-1, 31,0);
     tracep->declBus(c+65,"mcause_global", false,-1, 31,0);
+    tracep->declBus(c+80,"is_u_mode", false,-1, 0,0);
     tracep->declBus(c+103,"pc_set", false,-1, 0,0);
     tracep->declBus(c+103,"IF1_IF2_flush", false,-1, 0,0);
     tracep->declBus(c+106,"IF2_ID_flush", false,-1, 0,0);
@@ -1507,10 +1508,12 @@ VL_ATTR_COLD void VCPU___024root__trace_full_sub_0(VCPU___024root* vlSelf, Veril
                                                       >> 0x14U)))))
                                     : (~ ((0xfU == 
                                            (0x7fU & vlSelf->CPU__DOT__inst_id)) 
-                                          & (0U != 
-                                             (3U & 
-                                              (vlSelf->CPU__DOT__inst_id 
-                                               >> 0xdU)))))))));
+                                          & (~ (IData)(
+                                                       (0U 
+                                                        != 
+                                                        (3U 
+                                                         & (vlSelf->CPU__DOT__inst_id 
+                                                            >> 0xdU)))))))))));
     bufp->fullCData(oldp+409,((0x1fU & (vlSelf->CPU__DOT__inst_ls 
                                         >> 7U))),5);
     bufp->fullCData(oldp+410,((0x1fU & (vlSelf->CPU__DOT__inst_wb 

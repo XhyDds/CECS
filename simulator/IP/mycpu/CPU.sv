@@ -492,6 +492,7 @@ module CPU#(
         .mepc_global        (mepc_global),
         .mtvec_global       (mtvec_global),
         .mcause_global      (mcause_global),
+        .is_u_mode          (is_user_mode),
 
         .pc_set             (pc_set),
         .IF1_IF2_flush      (IF1_IF2_flush),

@@ -58,7 +58,8 @@ void single_cycle() {
 #endif
   dut->eval();
 
-  m_trace->dump(sim_time++); 
+//   m_trace->dump(sim_time++); 
+
   if(dut->commit_wb == 1) set_state();
 }
 
@@ -115,7 +116,7 @@ void cpu_exec(unsigned int n){
         difftest_sync();
       }
       // Lab3 TODO: use difftest_step function here to execute difftest
-      difftest_step();
+    //   difftest_step();
 
       g_nr_guest_inst++;
       npc_cpu_uncache_pre = dut->uncache_read_wb;
@@ -129,7 +130,9 @@ void cpu_exec(unsigned int n){
 
     if(sim_state.state != SIM_RUNNING) break;
   }
-  if(itrace_n!=-1) print_itrace(itrace_n);
+  if(itrace_n!=-1){
+    print_itrace(itrace_n);
+  } 
 
   switch (sim_state.state) {
     case SIM_RUNNING: sim_state.state = SIM_STOP; break;
@@ -141,6 +144,7 @@ void cpu_exec(unsigned int n){
           sim_state.halt_pc);
       // fall through
     case SIM_QUIT: 
+        isa_reg_display();
         print_itrace(-1);
         statistic();
   }

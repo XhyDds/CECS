@@ -265,6 +265,7 @@ module ICache #(
         lru_hit_update          = 0;
         lru_refill_update       = 0;
         icache_miss             = 0;
+        allign                  = 0; 
         case(state)
         IDLE: begin
             if(rvalid_pipe) begin

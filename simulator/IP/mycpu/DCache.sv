@@ -147,16 +147,16 @@ module DCache #(
         priv_vec_ls=0;
         if(rvalid_pipe) begin
             //读
-            if(d_rsize==0) begin
+            if(rsize_pipe==0) begin
                 //byte
             end
-            else if(d_rsize==3'b1)begin
+            else if(rsize_pipe==3'b1)begin
                 //half word
                 if(addr_pipe[0]==1'b1) begin
                     priv_vec_ls[`LD_ALLIGN]=1'b1;
                 end
             end
-            else if (d_rsize==3'h2) begin
+            else if (rsize_pipe==3'h2) begin
                 //word
                 if(addr_pipe[1:0]!=2'b00) begin
                     priv_vec_ls[`LD_ALLIGN]=1'b1;
@@ -166,16 +166,16 @@ module DCache #(
         end
         else if(wvalid_pipe) begin
             //写
-            if(d_wsize==0) begin
+            if(rsize_pipe==0) begin
                 //byte
             end
-            else if(d_wsize==3'h1)begin
+            else if(rsize_pipe==3'h1)begin
                 //half word
                 if(addr_pipe[0]==1'b1) begin
                     priv_vec_ls[`ST_ALLIGN]=1'b1;
                 end
             end
-            else if (d_wsize==3'h2) begin
+            else if (rsize_pipe==3'h2) begin
                 //word
                 if(addr_pipe[1:0]!=2'b00) begin
                     priv_vec_ls[`ST_ALLIGN]=1'b1;

@@ -96,6 +96,8 @@
         "unistd.h": "c",
         "libc-header-start.h": "c",
         "stubs-64.h": "c",
-        "trap.h": "c"
+        "trap.h": "c",
+        "cpu.h": "c",
+        "common.h": "c"
     }
 }

@@ -31,7 +31,7 @@ module CSR(
     reg [31:0] mstatus;
     always_ff @(posedge clk) begin
         if(!rstn) begin
-            mstatus <= 32'h0;
+            mstatus <= 32'h6;//初始为S-mode
         end
         else if(has_exp) begin
             mstatus <= {mstatus[31:12], mstatus[8:0], 3'h6};

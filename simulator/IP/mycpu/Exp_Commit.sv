@@ -8,19 +8,19 @@ module Exp_Commit(
     always_comb begin
         exp_code = 0;
         if(priv_vec[`INST_ALLIGN]) begin
-            exp_code = 32'h0;
-        end
-        else if(priv_vec[`INST_INVALID]) begin
             exp_code = 32'h1;
         end
-        else if(priv_vec[`LD_ALLIGN]) begin
+        else if(priv_vec[`INST_INVALID]) begin
             exp_code = 32'h2;
         end
-        else if(priv_vec[`ST_ALLIGN]) begin
+        else if(priv_vec[`LD_ALLIGN]) begin
             exp_code = 32'h3;
         end
-        else if(is_user_mode&&priv_vec[`CSR_RW]) begin
+        else if(priv_vec[`ST_ALLIGN]) begin
             exp_code = 32'h4;
+        end
+        else if(is_user_mode&&priv_vec[`CSR_RW]) begin
+            exp_code = 32'h5;
         end
         else if(priv_vec[`ECALL]) begin
             exp_code = 32'hb;

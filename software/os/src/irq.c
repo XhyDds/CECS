@@ -1,7 +1,7 @@
 #include <debug.h>
 #include <proc.h>
 #define ECALL_FROM_M 0xb
-#define INST_ALLIGN 0x0
+#define INST_ALLIGN 0x1
 #define INST_INVALID 0x2
 #define LD_ALLIGN 0x3
 #define ST_ALLIGN 0x4
@@ -15,23 +15,23 @@ Context* __irq_handle(Context *c) {
   Event ev = {0};
   switch (c->mcause) {
     case INST_ALLIGN: {
-        printf("Instruction address misaligned\n");
+        Log("Instruction address misaligned");
         ev.event = EVENT_ERROR; break;
     }
     case INST_INVALID: {
-        printf("Instruction fault\n");
+        Log("Instruction fault");
         ev.event = EVENT_ERROR; break;
     }
     case LD_ALLIGN: {
-        printf("Load address misaligned\n");
+        Log("Load address misaligned");
         ev.event = EVENT_ERROR; break;
     }
     case ST_ALLIGN: {
-        printf("Store address misaligned\n");
+        Log("Store address misaligned");
         ev.event = EVENT_ERROR; break;
     }
     case U_CSR_RW: {
-        printf("U-mode csr read/write\n");
+        Log("U-mode csr read/write");
         ev.event = EVENT_ERROR; break;
     }
 
@@ -63,7 +63,7 @@ static Context* __event_handle(Event e, Context* c) {
       c->mepc += 4;
       break;
     case EVENT_ERROR:
-      printf("Error: %d\n", c->mcause);
+      Log("Error: %d", c->mcause);
       halt(1);
       break;
     default: panic("Unhandled event ID = %d", e.event);

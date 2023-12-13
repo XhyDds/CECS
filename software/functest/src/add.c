@@ -11,8 +11,6 @@ int ans[] = {0, 0x1, 0x2, 0x7fffffff, 0x80000000, 0x80000001, 0xfffffffe, 0xffff
 #define NR_DATA LENGTH(test_data)
 
 int main() {
-    // asm volatile(".word 0x80000001");
-
 	int i, j, ans_idx = 0;
 	for(i = 0; i < NR_DATA; i ++) {
 		for(j = 0; j < NR_DATA; j ++) {
@@ -22,9 +20,6 @@ int main() {
 	}
 
 	check(i == NR_DATA);
-    // asm volatile("csrr x0, mstatus");
-    // asm volatile("csrw mstatus, x0");
-    // asm volatile("store x0, 0(x0)");
 
 	return 0;
 }

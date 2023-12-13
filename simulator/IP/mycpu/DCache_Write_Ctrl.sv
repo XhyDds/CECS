@@ -32,7 +32,7 @@ module DCache_Write_Ctrl(
             endcase
         end
         else begin
-            wstrb = 4'h0;
+            wstrb = 4'h0; 
             mem_wdata = 32'h0;
         end
     end

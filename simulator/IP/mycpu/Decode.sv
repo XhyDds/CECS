@@ -160,10 +160,10 @@ module Decode(
                 else is_not_other_priv=1;
             end
         end
-        else if(inst[6:0] == 7'hf && (|funct3[2:1])) is_not_other_priv=0;
+        else if(inst[6:0] == 7'hf && (~(|funct3[2:1]))) is_not_other_priv=0;
         else is_not_other_priv=1;
     end
 
-    assign priv_vec[`INST_ALLIGN] = is_not_common_ir && is_not_other_priv;
+    assign priv_vec[`INST_INVALID] = is_not_common_ir && is_not_other_priv && (inst!=0);
 
 endmodule

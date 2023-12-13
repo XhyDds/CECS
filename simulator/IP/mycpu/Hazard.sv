@@ -36,6 +36,7 @@ module Hazard(
     input  logic [31:0] mepc_global,
     input  logic [31:0] mtvec_global,
     input  logic [31:0] mcause_global,
+    input  logic [ 0:0] is_u_mode,
 
     // flush signals
     output logic [ 0:0] pc_set,
@@ -121,6 +122,7 @@ module Hazard(
         pc_set_target = jump_target;
         if(flush_by_exp) begin
             pc_set_target = mtvec_global;
+            // pc_set_target = {22'b0,is_u_mode,priv_vec_wb}+1;
         end
         else if(flush_by_priv_ex) begin
             pc_set_target = priv_vec_ex[`MRET] ? mepc_global : pc_ex + 4;

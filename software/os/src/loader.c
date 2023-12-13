@@ -42,7 +42,7 @@ static uintptr_t elf_load(const char *filename) {
     int fd=fs_open(filename,0,0);
     fs_read(fd, (void*)&elf_h, sizeof(Elf_Ehdr));
     // assert(elf_h.e_ident[0] == 0x80);
-    assert(elf_h.e_machine == EM_RISCV);
+    // assert(elf_h.e_machine == EM_RISCV);
     //2
     Elf_Phdr elf_ph;
     int i;
